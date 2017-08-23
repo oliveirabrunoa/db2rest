@@ -1,4 +1,4 @@
-from dbAutoMapModel import BaseClass
+from MapToRest.db_model import BaseClass
 
 
 class CourseType(BaseClass):
