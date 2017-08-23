@@ -14,6 +14,6 @@ def render_template(template, data):
 
 def render_to_template(file_name_arg, template_name, data_to_render):
     file_name = file_name_arg
-    with open(file_name, 'a+') as file:
+    with open(file_name, 'w') as file:
         template_render = render_template(template_name, data_to_render)
         file.write(template_render)

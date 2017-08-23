@@ -48,7 +48,7 @@ class LoadModelClasses(object):
                 "attributes": [model.get('attributes')]
                 }
             list_models.append(dict_model)
-            render_to_template("MapToRest/new_model.py", "template_model.py",dict_model)
+        render_to_template("MapToRest/db_model.py", "template_model.py",list_models)
 
 
     def open_config_file(self):

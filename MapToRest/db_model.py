@@ -1,15 +1,26 @@
 from MapToRest.db_config import Base
 from sqlalchemy import Column, Integer, String
 
-#Models que serão gerados dinamicamente
 
-class BaseClass(Base):
-    __tablename__ = 'course_type'
-    __table_args__ = ({'autoload':True})
+class CourseTypeBase(Base):
+    __tablename__ = "course_type"
 
-    #rename atributtes
-    description_ = Column('description')
+    id = Column('id', primary_key=True)
+    description = Column('description')
 
-    def __init__(self, id, description, *args):
-        self.id = id
-        self.description_ = description
+
+    def __init__(self, **kwargs):
+        for k, v in kwargs.iteritems():
+            setattr(self, k, v)
+
+
+class UserTypeBase(Base):
+    __tablename__ = "user_type"
+
+    id = Column('id', primary_key=True)
+    name = Column('name')
+
+
+    def __init__(self, **kwargs):
+        for k, v in kwargs.iteritems():
+            setattr(self, k, v)

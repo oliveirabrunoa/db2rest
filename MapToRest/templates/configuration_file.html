@@ -1,5 +1,5 @@
 [
-  {% for model in data %}
+  {% for model in data -%}
   {
     "model_name": "{{model.model_name}}", "table_name": "{{model.table_name}}",
     "attributes": {
@@ -7,6 +7,6 @@
         "{{ attribute.name }}": "column on database"{{ "," if not loop.last }}
       {% endfor -%}
     }
-  }
+  }{{ "," if not loop.last }}
   {% endfor %}
 ]

@@ -1,7 +1,7 @@
-from MapToRest.db_model import BaseClass
+from MapToRest.db_model import UserTypeBase
 
 
-class UserType():
+class UserType(UserTypeBase):
 
     __modelname__ = 'UserType'
 
@@ -11,4 +11,4 @@ class UserType():
                      {"name":"name", "type":"String", "max_lenght": 20}]
 
     def __init__(self, description):
-        BaseClass.__init__(self, id, name)
+        super().__init__(self, id, name)

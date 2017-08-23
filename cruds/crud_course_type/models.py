@@ -1,7 +1,7 @@
-from MapToRest.db_model import BaseClass
+from MapToRest.db_model import CourseTypeBase
 
 
-class CourseType(BaseClass):
+class CourseType(CourseTypeBase):
 
     __modelname__ = 'CourseType'
 
@@ -11,4 +11,4 @@ class CourseType(BaseClass):
                      {"name":"description", "type":"String", "max_lenght": 50}]
 
     def __init__(self, description):
-        BaseClass.__init__(self, id, description)
+        super().__init__(self, id, description)
