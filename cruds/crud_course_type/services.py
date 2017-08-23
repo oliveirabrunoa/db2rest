@@ -1,5 +1,6 @@
 from flask import Blueprint, jsonify, request
 from . import models
+from MapToRest import db_model as models
 from backend import db, db_session
 import datetime
 

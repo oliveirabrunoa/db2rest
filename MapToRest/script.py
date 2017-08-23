@@ -43,7 +43,7 @@ class LoadModelClasses(object):
         list_models=[]
         for model in data_config:
             dict_model = {
-                "model_name": model.get('model_name')+'Base',
+                "model_name": model.get('model_name'),
                 "table_name": model.get('table_name'),
                 "attributes": [model.get('attributes')]
                 }

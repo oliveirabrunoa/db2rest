@@ -3,11 +3,11 @@
     "model_name": "CourseType", "table_name": "course_type",
     "attributes": {
       "id": "id",
-      "description": "description"
+      "description_ok": "description"
       }
   },
   {
-    "model_name": "UserType", "table_name": "tipo_usuario",
+    "model_name": "UserType", "table_name": "user_type",
     "attributes": {
       "id": "id",
       "name": "name"
