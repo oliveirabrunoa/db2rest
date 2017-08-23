@@ -1,4 +1,4 @@
-from backend import BaseClass
+from dbAutoMapModel import BaseClass
 
 
 class CourseType(BaseClass):
@@ -10,6 +10,3 @@ class CourseType(BaseClass):
 
     def __init__(self, description):
         BaseClass.__init__(self, id, description)
-
-    def __str__(self):
-         return "{0}".format(self.__tablename__)
