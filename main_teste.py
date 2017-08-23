@@ -8,5 +8,5 @@ import json
 if __name__ == '__main__':
     LOADER_MODEL_CLASSES = ['cruds.crud_course_type.models.CourseType', 'cruds.crud_user_type.models.UserType']
     l = LoadModelClasses(LOADER_MODEL_CLASSES)
-    #l.generate_base_file()
-    l.generate_new_models()
+    l.generate_base_file()
+    #l.generate_new_models()

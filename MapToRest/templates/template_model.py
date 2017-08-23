@@ -4,7 +4,6 @@ from sqlalchemy import Column, Integer, String
 {% for model in data %}
 class {{model.model_name}}(Base):
     __tablename__ = "{{model.table_name}}"
-    __table_args__ = ({'autoload':True})
 
     {% for a in  model.attributes -%}
     {% for k,v in a.items() -%}

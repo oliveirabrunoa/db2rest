@@ -7,7 +7,7 @@
       }
   },
   {
-    "model_name": "UserType", "table_name": "user_type",
+    "model_name": "UserType", "table_name": "tipo_usuario",
     "attributes": {
       "id": "id",
       "name": "name"
