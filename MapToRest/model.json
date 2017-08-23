@@ -2,15 +2,15 @@
   {
     "model_name": "CourseType", "table_name": "course_type",
     "attributes": {
-      "id": "id",
-      "description_ok": "description"
+      "id_course_type": "id",
+      "description_course_type": "description"
       }
   },
   {
     "model_name": "UserType", "table_name": "user_type",
     "attributes": {
-      "id": "id",
-      "name": "name"
+      "id_user_type": "id",
+      "name_user_type": "name"
       }
   }
 

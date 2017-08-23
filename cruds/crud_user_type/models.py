@@ -6,5 +6,5 @@ class UserType:
 
     __tablename__ = 'user_type'
 
-    __attributes__ = [{"name":"id", "type": "Integer", "primary_key": True},
-                     {"name":"name", "type":"String", "max_lenght": 20}]
+    __attributes__ = [{"name":"id_user_type", "type": "Integer", "primary_key": True},
+                     {"name":"name_user_type", "type":"String", "max_lenght": 20}]

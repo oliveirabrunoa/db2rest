@@ -7,7 +7,7 @@ class {{model.model_name}}(Base):
 
     {% for a in  model.attributes -%}
     {% for k,v in a.items() -%}
-        {{k}} = Column('{{v}}'{{', primary_key=True' if k=='id' }})
+        {{k}} = Column('{{v}}'{{', primary_key=True' if 'id' in k }})
     {% endfor -%}
     {% endfor %}
 
