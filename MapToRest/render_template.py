@@ -15,7 +15,7 @@ def render_template(template, data):
 def render_to_template(file_name_arg, data):
     file_name = file_name_arg
     with open(file_name, 'w') as file:
-        data_to_render = render_template('configuration_file.txt', data)
+        data_to_render = render_template('configuration_file.html', data)
         file.write(data_to_render)
 
 
