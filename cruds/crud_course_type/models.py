@@ -3,7 +3,7 @@ from MapToRest.db_model import BaseClass
 
 class CourseType(BaseClass):
 
-    __tablename__ = 'course_type'
+    __modelname__ = 'CourseType'
 
     __attributes__ = [{"name":"id", "type": "Integer", "primary_key": True},
                      {"name":"description", "type":"String", "max_lenght": 50}]

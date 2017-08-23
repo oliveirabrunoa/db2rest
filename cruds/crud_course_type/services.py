@@ -8,8 +8,5 @@ course_type = Blueprint("course_type", __name__)
 
 @course_type.route('/course_type', methods=['GET'])
 def course_type_teste():
-    c = models.CourseType.query.all()
-    d = models.CourseType("novo")
-    print(c)
-
-    return jsonify({})
+    course_types = models.CourseType.query.all()
+    return jsonify(result=[dict(id=ct.id, description=ct.description_) for ct in course_types])

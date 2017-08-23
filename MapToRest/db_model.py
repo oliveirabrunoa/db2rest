@@ -5,10 +5,11 @@ from sqlalchemy import Column, Integer, String
 
 class BaseClass(Base):
     __tablename__ = 'course_type'
-    # __table_args__ = ({'autoload':True})
-    id = Column(Integer, primary_key=True)
-    description = Column(String(50))
+    __table_args__ = ({'autoload':True})
+
+    #rename atributtes
+    description_ = Column('description', String(50))
 
     def __init__(self, id, description, *args):
         self.id = id
-        self.description = description
+        self.description_ = description
