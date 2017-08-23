@@ -1,10 +1,14 @@
-from backend import db
+from MapToRest.db_model import BaseClass
 
 
-class UserType(db.Model):
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    name = db.Column(db.String(20), unique=True)
+class UserType():
 
+    __modelname__ = 'UserType'
 
-    def set_fields(self, fields):
-        self.name = fields['name']
+    __tablename__ = 'user_type'
+
+    __attributes__ = [{"name":"id", "type": "Integer", "primary_key": True},
+                     {"name":"name", "type":"String", "max_lenght": 20}]
+
+    def __init__(self, description):
+        BaseClass.__init__(self, id, name)

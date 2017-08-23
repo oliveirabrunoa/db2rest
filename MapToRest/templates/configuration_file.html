@@ -1,10 +1,12 @@
 [
+  {% for model in data %}
   {
-    "model_name": "{{model_name}}", "table_name": "{{table_name}}",
+    "model_name": "{{model.model_name}}", "table_name": "{{model.table_name}}",
     "attributes": {
-      {% for attribute in attributes -%}
+      {% for attribute in model.attributes -%}
         "{{ attribute.name }}": "column on database"{{ "," if not loop.last }}
       {% endfor -%}
     }
   }
+  {% endfor %}
 ]
