@@ -8,7 +8,7 @@ class BaseClass(Base):
     __table_args__ = ({'autoload':True})
 
     #rename atributtes
-    description_ = Column('description', String(50))
+    description_ = Column('description')
 
     def __init__(self, id, description, *args):
         self.id = id
