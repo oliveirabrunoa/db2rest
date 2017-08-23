@@ -1,5 +1,4 @@
 from flask import Flask
-import backend
 import os
 import importlib
 import string
