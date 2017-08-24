@@ -1,4 +1,4 @@
-from Map2Rest.db_config import Base
+from Map2Rest.db import Base
 from sqlalchemy import Column, Integer, String
 
 {% for model in data %}

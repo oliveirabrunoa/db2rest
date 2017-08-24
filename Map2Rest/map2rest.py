@@ -1,4 +1,4 @@
-from Map2Rest.db_config import Base, db_session, engine, meta
+from Map2Rest.db import Base, db_session, engine, meta
 from Map2Rest.render_template import render_to_template
 import json, pdb, os, importlib
 
@@ -34,7 +34,7 @@ class LoadModelClasses(object):
                 attributes.append(attribute)
             model_data['attributes']= attributes
             data_to_render.append(model_data)
-        render_to_template("Map2Rest/model.json", "configuration_file.html",data_to_render)
+        render_to_template("Map2Rest/to_generate_models.json", "to_generate_models_template.html",data_to_render)
 
 
     def generate_new_models(self):
@@ -52,14 +52,14 @@ class LoadModelClasses(object):
                 "attributes": [model.get('attributes')]
                 }
             list_models.append(dict_model)
-        render_to_template("Map2Rest/db_model.py", "template_model.py", list_models)
+        render_to_template("Map2Rest/models.py", "model_template.py", list_models)
 
 
     def open_config_file(self):
-        mode_json_path = 'Map2Rest/model.json'
+        mode_json_path = 'Map2Rest/to_generate_models.json'
         data = []
         if os.path.exists(mode_json_path):
-            with open('Map2Rest/model.json') as data_file:
+            with open(mode_json_path) as data_file:
                 data = json.load(data_file)
             return data
         return data
