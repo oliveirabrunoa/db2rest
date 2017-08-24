@@ -2,8 +2,8 @@ from flask import Flask
 import os
 import importlib
 import string
-from blueprints.post import post
-from blueprints.category import category
+from blueprints.blueprint_post import post
+from blueprints.blueprint_category import category
 
 
 def create_app():

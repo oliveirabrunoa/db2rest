@@ -1,7 +1,7 @@
 
 
 class Post(object):
-    __modelname__ = 'CourseType'
+    __modelname__ = 'Post'
 
     __tablename__ = 'course_type'
 
@@ -10,7 +10,7 @@ class Post(object):
 
 
 class Category(object):
-    __modelname__ = 'UserType'
+    __modelname__ = 'Category'
 
     __tablename__ = 'user_type'
 
