@@ -1,4 +1,4 @@
-# emile-server
+# Map2Rest
 Remote services for the mobile application for academic services management
 
 ## Getting Started
@@ -63,20 +63,9 @@ Run the main python module
 python emile_server.py
 ```
 
-## Deployment
-
-This session is for developers and people with permission in the heroku app for remote migration. 
-
-After push your new feature(and tested please), you can make the remote migrations with:
-
-```
-heroku run python manage.py db upgrade --app emile-server
-```
-
-
 ## Authors
 
-See also the list of [contributors](https://github.com/sandroandrade/emile-server/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/oliveirabrunoa/map2rest/contributors) who participated in this project.
 
 ## License
 
