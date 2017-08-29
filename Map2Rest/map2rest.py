@@ -23,23 +23,6 @@ class LoadModelClasses(object):
         for table in meta.sorted_tables:
             print(table)
 
-    def generate_base_file(self):
-        models_list = self.import_modules()
-        data_to_render = []
-
-        for m in models_list:
-            print(m.id_course_type, m.description_course_type)
-
-        # for model in models_list:
-        #     model_data = {"model_name": model.__modelname__, "table_name": model.__tablename__}
-        #     attributes = []
-        #     for attribute in model.__attributes__:
-        #         attributes.append(attribute)
-        #     model_data['attributes']= attributes
-        #     data_to_render.append(model_data)
-        # render_to_template("Map2Rest/to_generate_models.json", "to_generate_models_template.html",data_to_render)
-
-
     def generate_new_models(self):
         data_config = self.open_config_file()
 
@@ -56,13 +39,3 @@ class LoadModelClasses(object):
                 }
             list_models.append(dict_model)
         render_to_template("Map2Rest/models.py", "model_template.py", list_models)
-
-
-    def open_config_file(self):
-        mode_json_path = 'Map2Rest/to_generate_models.json'
-        data = []
-        if os.path.exists(mode_json_path):
-            with open(mode_json_path) as data_file:
-                data = json.load(data_file)
-            return data
-        return data
