@@ -27,14 +27,17 @@ class LoadModelClasses(object):
         models_list = self.import_modules()
         data_to_render = []
 
-        for model in models_list:
-            model_data = {"model_name": model.__modelname__, "table_name": model.__tablename__}
-            attributes = []
-            for attribute in model.__attributes__:
-                attributes.append(attribute)
-            model_data['attributes']= attributes
-            data_to_render.append(model_data)
-        render_to_template("Map2Rest/to_generate_models.json", "to_generate_models_template.html",data_to_render)
+        for m in models_list:
+            print(m.id_course_type, m.description_course_type)
+
+        # for model in models_list:
+        #     model_data = {"model_name": model.__modelname__, "table_name": model.__tablename__}
+        #     attributes = []
+        #     for attribute in model.__attributes__:
+        #         attributes.append(attribute)
+        #     model_data['attributes']= attributes
+        #     data_to_render.append(model_data)
+        # render_to_template("Map2Rest/to_generate_models.json", "to_generate_models_template.html",data_to_render)
 
 
     def generate_new_models(self):
