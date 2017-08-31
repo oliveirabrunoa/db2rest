@@ -23,6 +23,7 @@ class LoadModelClasses(object):
                 return True
         return False
 
+    #Realiza o importe dos módulos a partir da lista informada no momento da criação do objeto LoadModelClasses
     def import_modules(self):
         model_list = []
         for model in self.LOADER_MODEL_CLASSES:
@@ -33,17 +34,9 @@ class LoadModelClasses(object):
 
         return model_list
 
-
-    def config(self):
-        models_list = self.import_modules()
-        for m in models_list:
-            print(m)
-
-
-    def generate_models(self):
-        data_config = self.import_modules()
-
-        list_models=[]
+    #Formata e checa as informações preenchidas nos módulos.
+    def prepare_models(self):
+        list_models = self.import_modules()
 
         for model in data_config:
             dict_model = model.__dict__
@@ -52,6 +45,10 @@ class LoadModelClasses(object):
                     dict__ = getattr(dict_model.get(d), '__dict__')
                     print(dict_model.get('__tablename__'))
                     print(dict__)
+
+    #Geração do arquivo contendo os modelos.
+    def generate_models(self):
+
         #     dict_model = {
         #         "model_name": model.get('model_name'),
         #         "table_name": model.get('table_name'),
@@ -59,3 +56,5 @@ class LoadModelClasses(object):
         #         }
         #     list_models.append(dict_model)
         # render_to_template("Map2Rest/models.py", "model_template.py", list_models)
+
+    #Pendente: Criação de função para identificar relações, chaves e atributos compostos de acordo com valores informados!
