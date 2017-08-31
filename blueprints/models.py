@@ -1,13 +1,14 @@
 from Map2Rest.fields import Field
 
 class Post(object):
+
     __modelname__ = 'Post'
 
     __tablename__ = 'course_type'
 
     #Attributes
     id_course_type = Field(type='Integer', primary_key=True, column_table='id')
-    description_course_type = Field(type='String', max_lenght=50)
+    description_course_type = Field(type='String', max_lenght=50, column_table='description')
 
 
     # __attributes__ = [{"name":"id_course_type", "type": "Integer", "primary_key": True},
@@ -22,7 +23,7 @@ class Category(object):
 
     #Attributes
     id_user_type = Field(type='Integer', primary_key=True, column_table='id')
-    name_user_type = Field(type='String', max_lenght=50)
+    name_user_type = Field(type='String', max_lenght=50, column_table='name')
 
     # __attributes__ = [{"name":"id_user_type", "type": "Integer", "primary_key": True},
     #                  {"name":"name_user_type", "type":"String", "max_lenght": 20}]

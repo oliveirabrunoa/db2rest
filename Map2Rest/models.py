@@ -17,8 +17,8 @@ class Post(Base):
 class Category(Base):
     __tablename__ = "user_type"
 
-    id_user_type = Column('id', primary_key=True)
     name_user_type = Column('name')
+    id_user_type = Column('id', primary_key=True)
     
 
     def __init__(self, **kwargs):
