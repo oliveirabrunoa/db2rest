@@ -12,4 +12,6 @@ if __name__ == '__main__':
     #l.generate_models()
     #l.config()
     #l.table_names()
-    l.check_table_exist('course_type')
+    #l.check_table_exist('course_type')
+    l.generate_models()
+    #l.check_column_name('user_type', 'id')

@@ -5,10 +5,8 @@ from sqlalchemy import Column, Integer, String
 class {{model.model_name}}(Base):
     __tablename__ = "{{model.table_name}}"
 
-    {% for a in  model.attributes -%}
-    {% for k,v in a.items() -%}
-        {{k}} = Column('{{v}}'{{', primary_key=True' if 'id' in k }})
-    {% endfor -%}
+    {% for attr in  model.attributes -%}
+        {{attr.attribute_name}} = Column('{{attr.column_table}}' {{", primary_key=True" if attr.primary_key }})
     {% endfor %}
 
     def __init__(self, **kwargs):

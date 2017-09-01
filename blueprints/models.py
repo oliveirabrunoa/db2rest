@@ -11,11 +11,6 @@ class Post(object):
     description_course_type = Field(type='String', max_lenght=50, column_table='description')
 
 
-    # __attributes__ = [{"name":"id_course_type", "type": "Integer", "primary_key": True},
-    #                  {"name":"description_course_type", "type":"String", "max_lenght": 50}]
-
-
-
 class Category(object):
     __modelname__ = 'Category'
 
@@ -24,6 +19,3 @@ class Category(object):
     #Attributes
     id_user_type = Field(type='Integer', primary_key=True, column_table='id')
     name_user_type = Field(type='String', max_lenght=50, column_table='name')
-
-    # __attributes__ = [{"name":"id_user_type", "type": "Integer", "primary_key": True},
-    #                  {"name":"name_user_type", "type":"String", "max_lenght": 20}]

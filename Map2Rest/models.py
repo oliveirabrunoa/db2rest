@@ -5,8 +5,8 @@ from sqlalchemy import Column, Integer, String
 class Post(Base):
     __tablename__ = "course_type"
 
-    description_course_type = Column('description')
-    id_course_type = Column('id', primary_key=True)
+    description_course_type = Column('description' )
+    id_course_type = Column('id' , primary_key=True)
     
 
     def __init__(self, **kwargs):
@@ -17,8 +17,8 @@ class Post(Base):
 class Category(Base):
     __tablename__ = "user_type"
 
-    name_user_type = Column('name')
-    id_user_type = Column('id', primary_key=True)
+    id_user_type = Column('id' , primary_key=True)
+    name_user_type = Column('name' )
     
 
     def __init__(self, **kwargs):
