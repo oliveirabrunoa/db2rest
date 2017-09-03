@@ -1,25 +1,25 @@
 [
   {
-    "model_name": "Post",
-    "table_name": "course_type",
+    "__model_name__": "Post",
+    "__table_name__": "course_type",
     "attributes": {
       "id_course_type": {
-          "column_table":"column on database",
+          "column_table":"id",
           "primary_key": "True"},
       "description_course_type": {
-          "column_table":"column on database"}
+          "column_table":"description"}
       }
   },
 
   {
-    "model_name": "Category",
-    "table_name": "user_type",
+    "__model_name__": "Category",
+    "__table_name__": "user_type",
     "attributes": {
       "id_user_type": {
-          "column_table":"column on database",
+          "column_table":"id",
           "primary_key": "True"},
       "name_user_type": {
-          "column_table":"column on database"}
+          "column_table":"name"}
       }
   }
 

@@ -3,22 +3,31 @@ from Map2Rest.render_template import render_to_template
 import json, pdb, os, importlib
 from sqlalchemy import inspect
 
+
 class LoadModelClasses(object):
 
     def __init__(self, loader_models):
-        self.LOADER_MODEL_CLASSES = loader_models
+        self.LOADER_MODEL_CLASSES = loader_models #Path do json de configuração
 
-    #Realiza o importe dos módulos a partir da lista informada no momento da criação do objeto LoadModelClasses
-    def import_modules(self):
-        model_list = []
+    def open_config_file(self):
+        mode_json_path = 'Map2Rest/to_generate_models.json'
+        data = []
+        if os.path.exists(mode_json_path):
+            with open(mode_json_path) as data_file:
+                data = json.load(data_file)
+        return data
 
-        for model in self.LOADER_MODEL_CLASSES:
-            module_name, class_name = model.rsplit('.', maxsplit=1)
-            m = importlib.import_module(module_name)
-            cls = getattr(m, class_name)
-            model_list.append(cls)
+    def models_list(self):
+        models_json = self.open_config_file()
+        models_list = []
 
-        return model_list
+        for model_json in models_json:
+            model = ModelHelper(**model_json)
+            models_list.append(model)
+
+        return models_list
+
+
 
     #Verifica se o nome da tabela informado existe na base de dados.
     def check_table_exist(self, table_name):
@@ -38,39 +47,55 @@ class LoadModelClasses(object):
         return False
 
     #Formata e checa as informações preenchidas nos módulos.
-    def get_model_attributes(self, model):
-        model_attributes = []
+    def check_model_attributes(self, model):
 
-        for attribute in model.__dict__.keys():
-            if not attribute.startswith('__'):
+        if not self.check_table_exist(model.__table_name__):
+            print('A __table_name__ informada para o modelo {0} não existe!'.format(model.__model_name__))
+            exit()
 
-                model_attrs = getattr(model.__dict__.get(attribute), '__dict__')
-                if self.check_column_name(model.__tablename__, model_attrs.get('column_table')):
-                    attributes = model_attrs
-                    attributes['attribute_name'] = attribute
-                    model_attributes.append(attributes)
-                else:
+        for attribute in model.get_model_attributes():
+            for key in attribute.keys():
+                attr = attribute[key].get('column_table')
+                if not self.check_column_name(model.__table_name__, attribute[key].get('column_table')):
                     print('A propriedade column_table ({0}) informado para o atributo {1}, modelo {2}, não existe na base de dados.'.
-                          format(model_attrs.get('column_table'),attribute, model.__modelname__))
+                          format( attribute[key].get('column_table'),key, model.__model_name__ ))
                     exit()
-        return model_attributes
-
+        return True
 
     #Geração do arquivo contendo os modelos.
     def generate_models(self):
-        modules = self.import_modules()
-        list_models = []
-        for model in modules:
-            dict_model = {}
+        list_models = self.models_list()
 
-            if self.check_table_exist(model.__tablename__):
-                dict_model['model_name'] = model.__modelname__
-                dict_model['table_name'] = model.__tablename__
-                dict_model['attributes'] = self.get_model_attributes(model)
-
-                list_models.append(dict_model)
-            else:
-                print('O __tablename__ informado para o modelo {0} não existe na base de dados.'.format(model.__modelname__))
-        render_to_template("Map2Rest/models.py", "model_template.py", list_models)
+        for model in list_models:
+            print(model)
+            #if self.check_model_attributes(model):
+        #
+        #         dict_model = {}
+        #
+        #         dict_model['model_name'] = model.__model_name__
+        #         dict_model['table_name'] = model.__table_name__
+        #         dict_model['attributes'] = model.get_model_attributes()
+        #
+        #         list_models.append(dict_model)
+        #     else:
+        #         print('O __tablename__ informado para o modelo {0} não existe na base de dados.'.format(model.__modelname__))
+        # render_to_template("Map2Rest/models.py", "model_template.py", list_models)
 
     #Pendente: Criação de função para identificar relações, chaves e atributos compostos de acordo com valores informados!
+
+
+class ModelHelper(object):
+
+    def __init__(self, **kwargs):
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+    def get_model_attributes(self):
+        model_attributes = []
+
+        for attribute in self.__dict__.keys():
+            model_attrs = getattr(self, 'attributes')
+            if not attribute.startswith('__'):
+                model_attributes.append(model_attrs)
+
+        return model_attributes
