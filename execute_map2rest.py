@@ -6,12 +6,6 @@ import json
 
 
 if __name__ == '__main__':
-    LOADER_MODEL_CLASSES = ['blueprints.models.Post', 'blueprints.models.Category']
-    l = LoadModelClasses(LOADER_MODEL_CLASSES)
-    #l.generate_base_file()
-    #l.generate_models()
-    #l.config()
-    #l.table_names()
-    #l.check_table_exist('course_type')
-    l.generate_models()
-    #l.check_column_name('user_type', 'id')
+    CONFIG_FILE = 'Map2Rest/to_generate_models.json'
+    load_models = LoadModelClasses(CONFIG_FILE)
+    load_models.generate_models()

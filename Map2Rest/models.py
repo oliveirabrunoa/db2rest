@@ -5,12 +5,12 @@ from sqlalchemy import Column, Integer, String
 class Post(Base):
     __tablename__ = "course_type"
 
-    description_course_type = Column('description' )
     id_course_type = Column('id' , primary_key=True)
+    description_course_type = Column('description' )
     
 
     def __init__(self, **kwargs):
-        for k, v in kwargs.iteritems():
+        for k, v in kwargs.items():
             setattr(self, k, v)
 
 
@@ -22,6 +22,6 @@ class Category(Base):
     
 
     def __init__(self, **kwargs):
-        for k, v in kwargs.iteritems():
+        for k, v in kwargs.items():
             setattr(self, k, v)
 

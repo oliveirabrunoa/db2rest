@@ -6,14 +6,13 @@ from sqlalchemy import inspect
 
 class LoadModelClasses(object):
 
-    def __init__(self, loader_models):
-        self.LOADER_MODEL_CLASSES = loader_models #Path do json de configuração
+    def __init__(self, path_config_file):
+        self.CONFIG_FILE = path_config_file #Path do json de configuração
 
     def open_config_file(self):
-        mode_json_path = 'Map2Rest/to_generate_models.json'
         data = []
-        if os.path.exists(mode_json_path):
-            with open(mode_json_path) as data_file:
+        if os.path.exists(self.CONFIG_FILE):
+            with open(self.CONFIG_FILE) as data_file:
                 data = json.load(data_file)
         return data
 
@@ -24,6 +23,7 @@ class LoadModelClasses(object):
         for model_json in models_json:
             model = ModelHelper(**model_json)
             models_list.append(model)
+
         return models_list
 
     #Verifica se o nome da tabela informado existe na base de dados.
@@ -43,19 +43,18 @@ class LoadModelClasses(object):
                 return True
         return False
 
-    #Formata e checa as informações preenchidas nos módulos.
+    #Formata e checa as informações preenchidas sobre tabelas e atributos do arquivo de especificação.
     def check_model_attributes(self, model):
 
         if not self.check_table_exist(model.__table_name__):
             print('A __table_name__ informada para o modelo {0} não existe!'.format(model.__model_name__))
             exit()
 
-        for attribute in model.get_model_attributes():
-            for key in attribute.keys():
-                attr = attribute[key].get('column_table')
-                if not self.check_column_name(model.__table_name__, attribute[key].get('column_table')):
+        for attributes_list in model.get_model_attributes():
+            for attribute in attributes_list:
+                if not self.check_column_name(model.__table_name__, attribute.get('column_table')):
                     print('A propriedade column_table ({0}) informado para o atributo {1}, modelo {2}, não existe na base de dados.'.
-                          format( attribute[key].get('column_table'),key, model.__model_name__ ))
+                          format(attribute.column_table,key, model.__model_name_))
                     exit()
         return True
 
