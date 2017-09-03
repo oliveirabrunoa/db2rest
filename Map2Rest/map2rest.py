@@ -24,10 +24,7 @@ class LoadModelClasses(object):
         for model_json in models_json:
             model = ModelHelper(**model_json)
             models_list.append(model)
-
         return models_list
-
-
 
     #Verifica se o nome da tabela informado existe na base de dados.
     def check_table_exist(self, table_name):
@@ -65,21 +62,19 @@ class LoadModelClasses(object):
     #Geração do arquivo contendo os modelos.
     def generate_models(self):
         list_models = self.models_list()
+        models_to_generate = []
 
         for model in list_models:
-            print(model)
-            #if self.check_model_attributes(model):
-        #
-        #         dict_model = {}
-        #
-        #         dict_model['model_name'] = model.__model_name__
-        #         dict_model['table_name'] = model.__table_name__
-        #         dict_model['attributes'] = model.get_model_attributes()
-        #
-        #         list_models.append(dict_model)
-        #     else:
-        #         print('O __tablename__ informado para o modelo {0} não existe na base de dados.'.format(model.__modelname__))
-        # render_to_template("Map2Rest/models.py", "model_template.py", list_models)
+            if self.check_model_attributes(model):
+                dict_model = {}
+                dict_model['model_name'] = model.__model_name__
+                dict_model['table_name'] = model.__table_name__
+                dict_model['attributes'] = model.get_model_attributes()
+
+                models_to_generate.append(dict_model)
+            else:
+                print('O __tablename__ informado para o modelo {0} não existe na base de dados.'.format(model.__modelname__))
+        render_to_template("Map2Rest/models.py", "model_template.py", list_models)
 
     #Pendente: Criação de função para identificar relações, chaves e atributos compostos de acordo com valores informados!
 
