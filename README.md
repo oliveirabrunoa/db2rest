@@ -1,5 +1,4 @@
 # Map2Rest
-Remote services for the mobile application for academic services management
 
 ## Getting Started
 
@@ -44,23 +43,16 @@ export APP_SETTINGS="config.DevelopmentConfig"
 
 ### Running
 
-Execute script to create the tables
+Execute script to generate models
 
 ```
-python create_tables.py
+python execute_map2rest.py
 ```
-
-Load initial data
-
-```
-python csv_loader.py
-```
-
 
 Run the main python module
 
 ```
-python emile_server.py
+python run.py
 ```
 
 ## Authors
