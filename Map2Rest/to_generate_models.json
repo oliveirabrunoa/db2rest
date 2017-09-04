@@ -10,7 +10,15 @@
                     {
                       "attribute_name":  "description_course_type",
                       "column_table":"description"
-                    }]
+                    }],
+    "composite_attributes":[{
+                          "property_name": "name of property expected",
+                          "fields": "fields used in composition separated by Commas"
+                        }],
+    "relatioships": [{
+                    "type":"one-to-many",
+                    "parent":"",
+                    "child": ""}]
   },
 
   {
@@ -24,7 +32,15 @@
                     {
                       "attribute_name":  "name_user_type",
                       "column_table":"name"
-                    }]
+                    }],
+    "composite_attributes":[{
+                          "property_name": "",
+                          "fields": ","
+                        }],
+    "relatioships": [{
+                    "type":"one-to-many",
+                    "parent":"",
+                    "child": ""}]
   }
 
 ]
