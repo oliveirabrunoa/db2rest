@@ -19,7 +19,7 @@
                       "attribute_name":  "hora_postagem",
                       "column_table":"post_time"
                     }],
-    "composite_attributes":[{
+    "derived_attribute":[{
                           "property_name": "datalhes_publicacao",
                           "fields": "post_date|post_time"
                         }],

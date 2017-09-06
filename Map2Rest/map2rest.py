@@ -90,4 +90,7 @@ class ModelHelper(object):
                 if attribute == 'attributes':
                     model_attrs = getattr(self,attribute )
                     return model_attrs
+
         return model_attributes
+
+    
