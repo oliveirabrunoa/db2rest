@@ -2,8 +2,8 @@ from flask import Flask
 import os
 import importlib
 import string
-from blueprints.blueprint_post import post
-from blueprints.blueprint_category import category
+from blueprints.blueprint_postagem import postagem
+from blueprints.blueprint_categoria import categoria
 
 
 def create_app():
@@ -15,8 +15,8 @@ def create_app():
     return app
 
 app = create_app()
-app.register_blueprint(post)
-app.register_blueprint(category)
+app.register_blueprint(postagem)
+app.register_blueprint(categoria)
 
 if __name__ == '__main__':
     app.run()

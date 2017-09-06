@@ -1,42 +1,46 @@
 [
   {
-    "__model_name__": "Post",
-    "__table_name__": "course_type",
+    "__model_name__": "Postagem",
+    "__table_name__": "post",
     "attributes": [{
-                      "attribute_name": "id_course_type",
-                      "column_table":"id",
+                      "attribute_name": "id_postagem",
+                      "column_table":"post_id",
                       "primary_key": "True"
                     },
                     {
-                      "attribute_name":  "description_course_type",
-                      "column_table":"description"
+                      "attribute_name":  "titulo",
+                      "column_table":"post_title"
+                    },
+                    {
+                      "attribute_name":  "data_postagem",
+                      "column_table":"post_date"
+                    },
+                    {
+                      "attribute_name":  "hora_postagem",
+                      "column_table":"post_time"
                     }],
     "composite_attributes":[{
-                          "property_name": "name of property expected",
-                          "fields": "fields used in composition separated by Commas"
+                          "property_name": "datalhes_publicacao",
+                          "fields": "post_date|post_time"
                         }],
     "relatioships": [{
-                    "type":"one-to-many",
-                    "parent":"",
-                    "child": ""}]
+                    "type":"many-to-many",
+                    "child": "Category",
+                    "association_table": "post_id|category_id"}]
   },
 
   {
-    "__model_name__": "Category",
-    "__table_name__": "user_type",
+    "__model_name__": "Categoria",
+    "__table_name__": "category",
     "attributes": [{
-                      "attribute_name": "id_user_type",
-                      "column_table":"id",
+                      "attribute_name": "id_categoria",
+                      "column_table":"category_id",
                       "primary_key": "True"
                     },
                     {
-                      "attribute_name":  "name_user_type",
-                      "column_table":"name"
+                      "attribute_name":  "descricao",
+                      "column_table":"category_name"
                     }],
-    "composite_attributes":[{
-                          "property_name": "",
-                          "fields": ","
-                        }],
     "relatioships": [{
                     "type":"one-to-many",
                     "parent":"",

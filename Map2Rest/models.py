@@ -2,26 +2,27 @@ from Map2Rest.db import Base
 from sqlalchemy import Column, Integer, String
 
 
-class Post(Base):
-    __tablename__ = "course_type"
+class Postagem(Base):
+    __tablename__ = "post"
 
-    id_course_type = Column('id' , primary_key=True)
-    description_course_type = Column('description' )
-    
+    id_postagem = Column('post_id' , primary_key=True)
+    titulo = Column('post_title' )
+    data_postagem = Column('post_date' )
+    hora_postagem = Column('post_time' )
+
 
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
             setattr(self, k, v)
 
 
-class Category(Base):
-    __tablename__ = "user_type"
+class Categoria(Base):
+    __tablename__ = "category"
 
-    id_user_type = Column('id' , primary_key=True)
-    name_user_type = Column('name' )
-    
+    id_categoria = Column('category_id' , primary_key=True)
+    descricao = Column('category_name' )
+
 
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
             setattr(self, k, v)
-
