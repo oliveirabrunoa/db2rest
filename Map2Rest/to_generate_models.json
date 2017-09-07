@@ -23,7 +23,7 @@
                           "property_name": "datalhes_publicacao",
                           "fields": "post_date|post_time"
                         }],
-    "relatioships": [{
+    "relationships": [{
                     "type":"many-to-many",
                     "child": "Category",
                     "association_table": "post_id|category_id"}]
@@ -40,11 +40,6 @@
                     {
                       "attribute_name":  "descricao",
                       "column_table":"category_name"
-                    }],
-    "relatioships": [{
-                    "type":"one-to-many",
-                    "parent":"",
-                    "child": ""}]
+                    }]
   }
-
 ]
