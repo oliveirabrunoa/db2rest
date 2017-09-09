@@ -4,24 +4,24 @@
     "__table_name__": "post",
     "attributes": [{
                       "attribute_name": "id_postagem",
-                      "column_table":"post_id",
+                      "column_table":"id",
                       "primary_key": "True"
                     },
                     {
                       "attribute_name":  "titulo",
-                      "column_table":"post_title"
+                      "column_table":"title"
                     },
                     {
                       "attribute_name":  "data_postagem",
-                      "column_table":"post_date"
+                      "column_table":"date"
                     },
                     {
                       "attribute_name":  "hora_postagem",
-                      "column_table":"post_time"
+                      "column_table":"time"
                     }],
     "derived_attribute":[{
                           "property_name": "datalhes_publicacao",
-                          "fields": "post_date|post_time"
+                          "fields": "date|time"
                         }],
     "relationships": [{
                     "type":"many-to-many",
@@ -34,12 +34,12 @@
     "__table_name__": "category",
     "attributes": [{
                       "attribute_name": "id_categoria",
-                      "column_table":"category_id",
+                      "column_table":"id",
                       "primary_key": "True"
                     },
                     {
                       "attribute_name":  "descricao",
-                      "column_table":"category_name"
+                      "column_table":"name"
                     }]
   }
 ]

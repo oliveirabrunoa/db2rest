@@ -1,16 +1,18 @@
 from Map2Rest.db import Base
-from sqlalchemy import Column, Integer, String
+from sqlalchemy import Column, Integer, String, ForeignKey
+from sqlalchemy.orm import relationship, backref
 
 
 class Postagem(Base):
     __tablename__ = "post"
 
-    id_postagem = Column('post_id' , primary_key=True)
-    titulo = Column('post_title' )
-    data_postagem = Column('post_date' )
-    hora_postagem = Column('post_time' )
-    
+    id_postagem = Column('id' , primary_key=True)
+    titulo = Column('title' )
+    data_postagem = Column('date' )
+    hora_postagem = Column('time' )
 
+    categoria_id = Column('category',Integer, ForeignKey('category.id'))
+    categoria = relationship("Categoria")
 
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
@@ -20,12 +22,10 @@ class Postagem(Base):
 class Categoria(Base):
     __tablename__ = "category"
 
-    id_categoria = Column('category_id' , primary_key=True)
-    descricao = Column('category_name' )
-    
+    id_categoria = Column('id' , primary_key=True)
+    descricao = Column('name' )
 
 
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
             setattr(self, k, v)
-

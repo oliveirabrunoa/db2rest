@@ -65,17 +65,15 @@ class LoadModelClasses(object):
     #Geração do arquivo contendo os modelos.
     def generate_models(self):
         list_models = self.models_list()
-        for j in list_models:
-            j.get_relationships()
 
-        # for model in list_models:
-        #     if self.check_model_attributes(model):
-        #         setattr(model, 'attributes', model.get_model_attributes())
-        #     else:
-        #         print('O __tablename__ informado para o modelo {0} não existe na base de dados.'.format(model.__modelname__))
-        #         exit()
-        #
-        # render_to_template("Map2Rest/models.py", "model_template.py", list_models)
+        for model in list_models:
+            if self.check_model_attributes(model):
+                setattr(model, 'attributes', model.get_model_attributes())
+            else:
+                print('O __tablename__ informado para o modelo {0} não existe na base de dados.'.format(model.__modelname__))
+                exit()
+
+        render_to_template("Map2Rest/models.py", "teste.py", list_models)
 
     #Pendente: Criação de função para identificar relações, chaves e atributos compostos de acordo com valores informados!
 
