@@ -12,7 +12,8 @@ class Postagem(Base):
     hora_postagem = Column('time' )
 
     categoria_id = Column('category',Integer, ForeignKey('category.id'))
-    categoria = relationship("Categoria")
+    categoria = relationship("Categoria",backref="postagens",lazy='joined')
+
 
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
