@@ -24,9 +24,11 @@
                           "fields": "date|time"
                         }],
     "relationships": [{
-                    "type":"many-to-many",
-                    "child": "Category",
-                    "association_table": "post_id|category_id"}]
+                    "type":"one-to-many",
+                    "child_model_name": "categoria",
+                    "child_table_name":"category",
+                    "foreign_key": "category.id",
+                    "backref": "postagens"}]
   },
 
   {

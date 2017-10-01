@@ -73,7 +73,7 @@ class LoadModelClasses(object):
                 print('O __tablename__ informado para o modelo {0} não existe na base de dados.'.format(model.__modelname__))
                 exit()
 
-        render_to_template("Map2Rest/models.py", "teste.py", list_models)
+        render_to_template("Map2Rest/models.py", "model_template.py", list_models)
 
     #Pendente: Criação de função para identificar relações, chaves e atributos compostos de acordo com valores informados!
 
