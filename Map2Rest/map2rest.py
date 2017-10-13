@@ -50,14 +50,14 @@ class LoadModelClasses(object):
     #Formata e checa as informações preenchidas sobre tabelas e atributos do arquivo de especificação.
     def check_model_attributes(self, model):
 
-        if not self.check_table_exist(model.__table_name__):
-            print('A __table_name__ informada para o modelo {0} não existe!'.format(model.__model_name__))
+        if not self.check_table_exist(model.__db_table_name__):
+            print('A __db_table_name__ informada para o modelo {0} não existe!'.format(model.__rst_model_name__))
             exit()
 
         for attributes_list in model.get_model_attributes():
-            if not self.check_column_name(model.__table_name__, attributes_list.get('column_table')):
-                print('A propriedade column_table ({0}) informado para o modelo {1} não existe na base de dados.'
-                      .format(attributes_list.get('column_table'), model.__model_name__))
+            if not self.check_column_name(model.__db_table_name__, attributes_list.get('db_column_table')):
+                print('A propriedade db_column_table ({0}) informado para o modelo {1} não existe na base de dados.'
+                      .format(attributes_list.get('db_column_table'), model.__rst_model_name__))
                 exit()
 
         return True
@@ -93,6 +93,7 @@ class ModelHelper(object):
 
         return model_attributes
 
+#Será refatorado!
     def get_relationships(self):
         relationships_attr = getattr(self, 'relationships', None)
         relationships = {}

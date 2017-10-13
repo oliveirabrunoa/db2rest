@@ -11,9 +11,6 @@ class Postagem(Base):
     data_postagem = Column('date')
     hora_postagem = Column('time')
     
-    categoria_id = Column('category', Integer, ForeignKey('category.id'))
-    categoria = relationship("Categoria", backref="postagens",lazy='joined')
-    
 
 
     def __init__(self, **kwargs):

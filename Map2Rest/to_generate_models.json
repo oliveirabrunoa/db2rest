@@ -1,47 +1,47 @@
 [
   {
-    "__model_name__": "Postagem",
-    "__table_name__": "post",
+    "__rst_model_name__": "Postagem",
+    "__db_table_name__": "post",
     "attributes": [{
-                      "attribute_name": "id_postagem",
-                      "column_table":"id",
-                      "primary_key": "True"
+                      "rst_attribute_name": "id_postagem",
+                      "db_column_table":"id",
+                      "db_primary_key": "True"
                     },
                     {
-                      "attribute_name":  "titulo",
-                      "column_table":"title"
+                      "rst_attribute_name":  "titulo",
+                      "db_column_table":"title"
                     },
                     {
-                      "attribute_name":  "data_postagem",
-                      "column_table":"date"
+                      "rst_attribute_name":  "data_postagem",
+                      "db_column_table":"date"
                     },
                     {
-                      "attribute_name":  "hora_postagem",
-                      "column_table":"time"
+                      "rst_attribute_name":  "hora_postagem",
+                      "db_column_table":"time"
                     }],
     "derived_attribute":[{
-                          "property_name": "datalhes_publicacao",
-                          "fields": "date|time"
+                          "rst_property_name": "datalhes_publicacao",
+                          "db_columns": "date|time"
                         }],
     "relationships": [{
                     "type":"one-to-many",
-                    "child_model_name": "categoria",
-                    "child_table_name":"category",
-                    "foreign_key": "category.id",
-                    "backref": "postagens"}]
+                    "rst_model_name": "categoria",
+                    "db_table_name":"category",
+                    "db_foreign_key": "category.id",
+                    "rst_backref": "postagens"}]
   },
 
   {
-    "__model_name__": "Categoria",
-    "__table_name__": "category",
+    "__rst_model_name__": "Categoria",
+    "__db_table_name__": "category",
     "attributes": [{
-                      "attribute_name": "id_categoria",
-                      "column_table":"id",
-                      "primary_key": "True"
+                      "rst_attribute_name": "id_categoria",
+                      "db_column_table":"id",
+                      "db_primary_key": "True"
                     },
                     {
-                      "attribute_name":  "descricao",
-                      "column_table":"name"
+                      "rst_attribute_name":  "descricao",
+                      "db_column_table":"name"
                     }]
   }
 ]
