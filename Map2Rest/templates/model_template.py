@@ -11,6 +11,14 @@ class {{model.__rst_model_name__}}(Base):
     {% endfor %}
 
 
+    {%- for relation in model.relationships -%}
+    {% if relation.type == "one-to-many" %}
+    {{relation.rst_model_name}}_id = Column('{{relation.db_table_name}}', Integer, ForeignKey('{{relation.db_foreign_key}}'))
+    {{relation.rst_model_name}} = relationship("{{relation.rst_model_name.capitalize()}}", backref="{{relation.rst_backref}}",lazy='joined')
+    {% endif %}
+    {%- endfor %}
+
+
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
             setattr(self, k, v)
