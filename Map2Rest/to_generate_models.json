@@ -24,11 +24,12 @@
                           "db_columns": "date|time"
                         }],
     "relationships": [{
-                    "type":"one-to-many",
+                    "type":"many-to-one",
                     "rst_model_name": "categoria",
                     "db_table_name":"category",
                     "db_foreign_key": "category.id",
-                    "rst_backref": "postagens"}]
+                    "rst_backref": "postagens"}
+                  ]
   },
 
   {

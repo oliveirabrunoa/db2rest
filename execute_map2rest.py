@@ -8,4 +8,4 @@ import json
 if __name__ == '__main__':
     CONFIG_FILE = 'Map2Rest/to_generate_models.json'
     load_models = LoadModelClasses(CONFIG_FILE)
-    load_models.generate_models()
+    load_models.generate_file()

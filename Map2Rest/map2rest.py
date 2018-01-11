@@ -9,12 +9,14 @@ class LoadModelClasses(object):
     def __init__(self, path_config_file):
         self.CONFIG_FILE = path_config_file #Path do json de configuração
 
+
     def open_config_file(self):
         data = []
 
         if os.path.exists(self.CONFIG_FILE):
             with open(self.CONFIG_FILE) as data_file:
                 data = json.load(data_file)
+        print('Lendo arquivo de configuração...')
 
         return data
 
@@ -65,17 +67,33 @@ class LoadModelClasses(object):
     #Geração do arquivo contendo os modelos.
     def generate_models(self):
         list_models = self.models_list()
-
+        print('Gerando modelos...')
         for model in list_models:
             if self.check_model_attributes(model):
                 setattr(model, 'attributes', model.get_model_attributes())
+                print('O modelo {0} correspondente a tabela {1} foi criado com sucesso!'.format(model.__rst_model_name__, model.__db_table_name__))
             else:
                 print('O __tablename__ informado para o modelo {0} não existe na base de dados.'.format(model.__modelname__))
                 exit()
+        return list_models
 
-        render_to_template("Map2Rest/models.py", "model_template.py", list_models)
 
-    #Pendente: Criação de função para identificar relações, chaves e atributos compostos de acordo com valores informados!
+    def check_relationships(self):
+        meta.reflect(bind=engine)
+        for t in meta.sorted_tables:
+            if t.name == 'post':
+                mapper = inspect(t)
+                fory = mapper.foreign_keys
+                for o in fory:
+                    print(o.name)
+
+
+    def generate_file(self):
+        list_models = self.generate_models()
+        self.check_relationships()
+        #render_to_template("Map2Rest/models.py", "model_template.py", list_models)
+        #verificar modelos criados e ver se existe uma relação entre eles. Se existir,
+        # segue o barco... se não existir, mostrar uma mensagem informando que não existe o relacionamento na database.
 
 
 class ModelHelper(object):
@@ -85,21 +103,17 @@ class ModelHelper(object):
             setattr(self, k, v)
 
     def get_model_attributes(self):
+        model_attrs = {}
         for attribute in self.__dict__.keys():
             if not attribute.startswith('__'):
                 if attribute == 'attributes':
-                    model_attrs = getattr(self,attribute )
+                    model_attrs = getattr(self,attribute)
                     return model_attrs
 
-        return model_attributes
+        return model_attrs
 
-#Será refatorado!
     def get_relationships(self):
         relationships_attr = getattr(self, 'relationships', None)
-        relationships = {}
         if relationships_attr:
-            for relationship in relationships_attr:
-                fields = relationship['association_table'].split('|')
-                relationships = dict(type=relationship['type'], child=relationship['child'],
-                                association_table=[r for r in fields])
-        return relationships
+            return relationships_attr
+        return False

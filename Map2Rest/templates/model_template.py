@@ -12,7 +12,7 @@ class {{model.__rst_model_name__}}(Base):
 
 
     {%- for relation in model.relationships -%}
-    {% if relation.type == "one-to-many" %}
+    {% if relation.type == "many-to-one" %}
     {{relation.rst_model_name}}_id = Column('{{relation.db_table_name}}', Integer, ForeignKey('{{relation.db_foreign_key}}'))
     {{relation.rst_model_name}} = relationship("{{relation.rst_model_name.capitalize()}}", backref="{{relation.rst_backref}}",lazy='joined')
     {% endif %}

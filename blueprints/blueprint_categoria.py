@@ -6,7 +6,7 @@ categoria = Blueprint("categoria", __name__)
 
 @categoria.route('/categorias')
 def lista_categorias():
-    categorias = models.Categoria.query.get(2)
+    categorias = models.Categoria.query.get(1)
     print(categorias.postagens)
 
     return ('ok')
