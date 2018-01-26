@@ -32,6 +32,7 @@ class LoadModelClasses(object):
 
     #Verifica se o nome da tabela informado existe na base de dados.
     def check_table_exist(self, table_name):
+
         table_names = meta.sorted_tables
 
         if table_name in str(table_names):
@@ -39,6 +40,13 @@ class LoadModelClasses(object):
 
         return False
 
+    def get_table(self, table_name):
+
+        for table in meta.sorted_tables:
+            if table.name==table_name:
+                return table
+
+        return False
     #Verifica se o nome da coluna informada existe na base de dados.
     def check_column_name(self,table_name, column_name):
         insp = inspect(engine)
@@ -78,19 +86,29 @@ class LoadModelClasses(object):
         return list_models
 
 
-    def check_relationships(self):
-        meta.reflect(bind=engine)
-        for t in meta.sorted_tables:
-            if t.name == 'post':
-                mapper = inspect(t)
-                fory = mapper.foreign_keys
-                for o in fory:
-                    print(o.name)
+    def check_relationships(self, model):
+        if model.get_relationships():
+            for relationship in model.get_relationships():
+                table_name = relationship.get('db_table_name')#pega no nome da tabela com o qual tem relacionamento
+
+                if self.check_table_exist(table_name): #verifica se a tabela de fato existe na base
+                    mapper_table = inspect(self.get_table(table_name))
+                    for pk in mapper_table.primary_key:
+                        if str(pk.name) == (relationship.get('db_foreign_key').split(".")[1]):
+                            return True
+                        else:
+                            print("Atributo não encontrado")
+                            return False
+                else:
+                    print("A tabela informada não existe na base de dados")
+                    return False
 
 
+
+#verificar se a foreikg do entidade alvo é a mesma informada no json
     def generate_file(self):
         list_models = self.generate_models()
-        self.check_relationships()
+        self.check_relationships(list_models[0])
         #render_to_template("Map2Rest/models.py", "model_template.py", list_models)
         #verificar modelos criados e ver se existe uma relação entre eles. Se existir,
         # segue o barco... se não existir, mostrar uma mensagem informando que não existe o relacionamento na database.
