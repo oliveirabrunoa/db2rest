@@ -87,27 +87,37 @@ class LoadModelClasses(object):
 
 
     def check_relationships(self, model):
-        if model.get_relationships():
-            for relationship in model.get_relationships():
-                table_name = relationship.get('db_table_name')#pega no nome da tabela com o qual tem relacionamento
 
-                if self.check_table_exist(table_name): #verifica se a tabela de fato existe na base
-                    mapper_table = inspect(self.get_table(table_name))
-                    for pk in mapper_table.primary_key:
-                        if str(pk.name) == (relationship.get('db_foreign_key').split(".")[1]):
-                            return True
-                        else:
-                            print("Atributo não encontrado")
-                            return False
+        if not model.get_relationships():
+            print("O modelo {0} não possui relacionamentos descritos no JSON de configuração.".format(model.__rst_model_name__))
+            return False
+
+        result_list = []
+        for relationship in model.get_relationships():
+            table_name = relationship.get('db_table_name')#pega no nome da tabela com o qual tem relacionamento
+
+            if not self.check_table_exist(table_name): #verifica se a tabela de fato existe na base
+                result_list.append({'status': 'A tabela {0} não existe na Base de Dados. Verifique os relacionamentos para o modelo no JSON de configuração e tente novamente.'
+                               .format(table_name)})
+                print(result_list)
+                return False
+
+            mapper_table = inspect(self.get_table(table_name))
+            for pk in mapper_table.primary_key:
+                if str(pk.name) == (relationship.get('db_foreign_key').split(".")[1]):
+                    result_list.append({'status': 'Relacionamento entre {0} e {1} através da foreign_key {2} encontrado!'
+                                   .format('teste','teste',relationship.get('db_foreign_key'))})
                 else:
-                    print("A tabela informada não existe na base de dados")
-                    return False
+                    result_list.append({'status': 'Relacionamento entre {0} e {1} através da foreign_key {2} NÃO encontrado!'
+                                   .format('teste','teste','teste')})
 
+        [print(result) for result in result_list]
 
 
 #verificar se a foreikg do entidade alvo é a mesma informada no json
     def generate_file(self):
         list_models = self.generate_models()
+
         self.check_relationships(list_models[0])
         #render_to_template("Map2Rest/models.py", "model_template.py", list_models)
         #verificar modelos criados e ver se existe uma relação entre eles. Se existir,
