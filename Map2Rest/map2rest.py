@@ -89,12 +89,11 @@ class LoadModelClasses(object):
     def check_relationships(self, model):
 
         if not model.get_relationships():
-            print("O modelo {0} não possui relacionamentos descritos no JSON de configuração.".format(model.__rst_model_name__))
             return False
 
         result_list = []
         for relationship in model.get_relationships():
-            table_name = relationship.get('db_table_name')#pega no nome da tabela com o qual tem relacionamento
+            table_name = relationship.get('db_table_name')#Obtém o nome da tabela com o qual tem relacionamento
 
             if not self.check_table_exist(table_name): #verifica se a tabela de fato existe na base
                 result_list.append({'status': 'A tabela {0} não existe na Base de Dados. Verifique os relacionamentos para o modelo no JSON de configuração e tente novamente.'
@@ -114,14 +113,44 @@ class LoadModelClasses(object):
         [print(result) for result in result_list]
 
 
+    def teste_modelrender(self, model):
+         list_relationships=[]
+         for relation in model.get_relationships():
+             if relation.get('type') == 'many-to-one':
+                 temp = [
+                         {
+                         'relation_atribute_name': '{0}_id'.format(relation.get('rst_model_name')),
+                         'atribute_field': 'Column',
+                         'atribute_field_name': "'{0}'".format(relation.get('db_table_name')),
+                         'atribute_field_type': 'Integer',
+                         'atribute_field_fk': "'{0}'".format(relation.get('db_foreign_key'))
+                         },
+                         {
+                         'relation_atribute_name': relation.get('rst_model_name'),
+                         'atribute_field': 'relationship',
+                         'atribute_field_name': "'{0}'".format(relation.get('rst_model_name').capitalize()),
+                         'atribute_field_backref': "'{0}'".format(relation.get('rst_backref'))
+
+                         }]
+                 list_relationships.append(temp)
+         setattr(model, 'relationship_atributes', list_relationships)
+
+
 #verificar se a foreikg do entidade alvo é a mesma informada no json
     def generate_file(self):
         list_models = self.generate_models()
+        self.teste_modelrender(list_models[0])
+        #print(list_models[0].relationship_atributes)
+        #self.check_relationships(list_models[0])
+        render_to_template("Map2Rest/models.py", "model_template.py",list_models)
 
-        self.check_relationships(list_models[0])
-        #render_to_template("Map2Rest/models.py", "model_template.py", list_models)
-        #verificar modelos criados e ver se existe uma relação entre eles. Se existir,
-        # segue o barco... se não existir, mostrar uma mensagem informando que não existe o relacionamento na database.
+#    categoria_id = Column('category', Integer, ForeignKey('category.id'))
+#    categoria = relationship("Categoria", backref="postagens",lazy='joined')
+
+        ####Pendências####
+        #Montar a estrutura dos modelos, ja considerando os relacionamentos e atributos necessários para renderizar templates;
+        #Verificar a questão dos relacionamentos Many to Many (como funciona a tabela de associação)
+
 
 
 class ModelHelper(object):
