@@ -120,14 +120,11 @@ class LoadModelClasses(object):
                  temp = [
                          {
                          'relation_atribute_name': '{0}_id'.format(relation.get('rst_model_name')),
-                         'atribute_field': 'Column',
-                         'atribute_field_name': "'{0}'".format(relation.get('db_table_name')),
-                         'atribute_field_type': 'Integer',
-                         'atribute_field_fk': "'{0}'".format(relation.get('db_foreign_key'))
+                         'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_table_name')),
+                         'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_foreign_key'))
                          },
                          {
-                         'relation_atribute_name': relation.get('rst_model_name'),
-                         'atribute_field': 'relationship',
+                         'relation_atribute_name': relation.get('rst_model_name'),'atribute_field': 'relationship',
                          'atribute_field_name': "'{0}'".format(relation.get('rst_model_name').capitalize()),
                          'atribute_field_backref': "'{0}'".format(relation.get('rst_backref'))
 
@@ -143,9 +140,6 @@ class LoadModelClasses(object):
         #print(list_models[0].relationship_atributes)
         #self.check_relationships(list_models[0])
         render_to_template("Map2Rest/models.py", "model_template.py",list_models)
-
-#    categoria_id = Column('category', Integer, ForeignKey('category.id'))
-#    categoria = relationship("Categoria", backref="postagens",lazy='joined')
 
         ####Pendências####
         #Montar a estrutura dos modelos, ja considerando os relacionamentos e atributos necessários para renderizar templates;
