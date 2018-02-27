@@ -10,11 +10,11 @@ class Postagem(Base):
     titulo = Column('title')
     data_postagem = Column('date')
     hora_postagem = Column('time')
-
+    
     ##Relationships##
     categoria_id = Column('category',Integer,ForeignKey('category.id'))
-    categoria = relationship('Categoria',lazy='joined')
-
+    categoria = relationship('Categoria' ,backref='postagens' ,lazy='joined')
+    
 
 
     def __init__(self, **kwargs):
@@ -28,7 +28,7 @@ class Categoria(Base):
 
     id_categoria = Column('id', primary_key=True)
     descricao = Column('name')
-
+    
     ##Relationships##
 
 
@@ -46,10 +46,10 @@ class Livro(Base):
     autor = Column('author')
     publicacao = Column('published_date')
     isbn = Column('isbn')
-
+    
     ##Relationships##
     revisao = relationship('Revisao',lazy='joined')
-
+    
 
 
     def __init__(self, **kwargs):
@@ -66,7 +66,7 @@ class Revisao(Base):
     conteudo = Column('content')
     pontuacao = Column('rating')
     publicacao = Column('published_date')
-
+    
     ##Relationships##
     livro_id = Column('book_id',Integer,ForeignKey('books.id'))
 
@@ -74,3 +74,5 @@ class Revisao(Base):
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
             setattr(self, k, v)
+
+
