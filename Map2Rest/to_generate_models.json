@@ -24,7 +24,7 @@
                           "db_columns": "date|time"
                         }],
     "relationships": [{
-                    "type":"many-to-one",
+                    "type":"M2O",
                     "rst_model_name": "categoria",
                     "db_table_name":"category",
                     "db_foreign_key": "category.id",
@@ -44,5 +44,67 @@
                       "rst_attribute_name":  "descricao",
                       "db_column_table":"name"
                     }]
+  },
+
+  {
+    "__rst_model_name__": "Livro",
+    "__db_table_name__": "books",
+    "attributes": [{
+                      "rst_attribute_name": "id",
+                      "db_column_table":"id",
+                      "db_primary_key": "True"
+                    },
+                    {
+                      "rst_attribute_name":  "titulo",
+                      "db_column_table":"title"
+                    },
+                    {
+                      "rst_attribute_name":  "autor",
+                      "db_column_table":"author"
+                    },
+                    {
+                      "rst_attribute_name":  "publicacao",
+                      "db_column_table":"published_date"
+                    },
+                    {
+                      "rst_attribute_name":  "isbn",
+                      "db_column_table":"isbn"
+                    }]
+
+  },
+  {
+    "__rst_model_name__": "Revisao",
+    "__db_table_name__": "reviews",
+    "attributes": [{
+                      "rst_attribute_name": "id",
+                      "db_column_table":"id",
+                      "db_primary_key": "True"
+                    },
+                    {
+                      "rst_attribute_name":  "revisor_name",
+                      "db_column_table":"reviewer_name"
+                    },
+                    {
+                      "rst_attribute_name":  "conteudo",
+                      "db_column_table":"content"
+                    },
+                    {
+                      "rst_attribute_name":  "pontuacao",
+                      "db_column_table":"rating"
+                    },
+                    {
+                      "rst_attribute_name":  "publicacao",
+                      "db_column_table":"published_date"
+                    }],
+    "relationships": [{
+                    "type":"O2M",
+                    "rst_model_name": "revisao",
+                    "rst_model_target": "Livro",
+                    "db_table_name":"books",
+                    "db_foreign_key": "books.id",
+                    "db_column_fk":"book_id",
+                    "rst_back_populates":"endereco"}
+                  ]
   }
+
 ]

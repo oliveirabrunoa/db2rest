@@ -8,7 +8,7 @@ postagem = Blueprint("postagem", __name__)
 def lista_postagens():
     #postagens = models.Postagem.query.all()[0]
     #print(postagens.categoria.descricao)
-    b = models.ReviewsModel.query.all()
+    b = models.Revisao.query.all()
     for boo in b:
         if boo.livro_id == 2:
             print(boo.revisor_name)

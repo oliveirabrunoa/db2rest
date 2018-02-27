@@ -113,38 +113,63 @@ class LoadModelClasses(object):
         [print(result) for result in result_list]
 
 
-    def teste_modelrender(self, model):
-         list_relationships=[]
-         for relation in model.get_relationships():
-             if relation.get('type') == 'many-to-one':
-                 temp = [
-                         {
-                         'relation_atribute_name': '{0}_id'.format(relation.get('rst_model_name')),
-                         'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_table_name')),
-                         'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_foreign_key'))
-                         },
-                         {
-                         'relation_atribute_name': relation.get('rst_model_name'),'atribute_field': 'relationship',
-                         'atribute_field_name': "'{0}'".format(relation.get('rst_model_name').capitalize()),
-                         'atribute_field_backref': "'{0}'".format(relation.get('rst_backref'))
-
-                         }]
-                 list_relationships.append(temp)
-         setattr(model, 'relationship_atributes', list_relationships)
-
-
-#verificar se a foreikg do entidade alvo é a mesma informada no json
-    def generate_file(self):
+    def generate_relationships(self):
         list_models = self.generate_models()
-        self.teste_modelrender(list_models[0])
-        #print(list_models[0].relationship_atributes)
-        #self.check_relationships(list_models[0])
+        for model in list_models:
+            if not model.get_relationships():
+                print('O modelo {0} não possui relacionamentos definidos no arquivo de configuração.'.format(model.__rst_model_name__))
+                continue
+
+            for relation in model.get_relationships():
+                if relation.get('type') == 'M2O':
+                    relation_M2O = [
+                             {
+                             'relation_atribute_name': '{0}_id'.format(relation.get('rst_model_name')),
+                             'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_table_name')),
+                             'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_foreign_key'))
+                             },
+                             {
+                             'relation_atribute_name': relation.get('rst_model_name'),'atribute_field': 'relationship',
+                             'atribute_field_name': "'{0}'".format(relation.get('rst_model_name').capitalize()),
+                             'atribute_field_backref': "'{0}'".format(relation.get('rst_backref'))
+
+                             }]
+                    setattr(model, 'relationship_atributes', relation_M2O)
+
+                if relation.get('type') == 'O2M':
+                    relation_O2M = [
+                             {
+                             'relation_atribute_name': '{0}_id'.format(relation.get('rst_model_target').lower()),
+                             'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_column_fk')),
+                             'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_foreign_key'))
+                             }]
+                    setattr(model, 'relationship_atributes', relation_O2M)
+                    relation_O2M_target = [
+                               {
+                               'relation_atribute_name': relation.get('rst_model_name'),'atribute_field': 'relationship',
+                               'atribute_field_name': "'{0}'".format(relation.get('rst_model_name').capitalize())
+                               }]
+
+                    target = self.get_model_by_name(list_models,relation.get('rst_model_target'))
+                    setattr(target, 'relationship_atributes', relation_O2M_target)
+
+
         render_to_template("Map2Rest/models.py", "model_template.py",list_models)
 
-        ####Pendências####
-        #Montar a estrutura dos modelos, ja considerando os relacionamentos e atributos necessários para renderizar templates;
-        #Verificar a questão dos relacionamentos Many to Many (como funciona a tabela de associação)
 
+    def get_model_by_name(self, list_models, model_name):
+
+        for model in list_models:
+            if model.__rst_model_name__ == model_name:
+                return model
+
+
+    def generate_file(self):
+       list_models = self.generate_models()
+       for model in list_models:
+           print(model.__rst_model_name__)
+           self.check_relationships(model)
+       self.generate_relationships()
 
 
 class ModelHelper(object):
@@ -167,4 +192,3 @@ class ModelHelper(object):
         relationships_attr = getattr(self, 'relationships', None)
         if relationships_attr:
             return relationships_attr
-        return False
