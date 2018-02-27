@@ -14,7 +14,7 @@ class {{model.__rst_model_name__}}(Base):
     {% if relation.atribute_field == "Column" %}
     {{relation.relation_atribute_name}} = {{relation.atribute_field}}({{relation.atribute_field_name}},{{relation.atribute_field_type}},ForeignKey({{relation.atribute_field_fk}}))
     {%- else %}
-    {{relation.relation_atribute_name}} = {{relation.atribute_field}}({{relation.atribute_field_name}}{% if relation.atribute_field_backref is defined %} ,backref={{relation.atribute_field_backref}} {% endif %},lazy='joined')
+    {{relation.relation_atribute_name}} = {{relation.atribute_field}}({{relation.atribute_field_name}}{% if relation.atribute_field_backref is defined %},backref={{relation.atribute_field_backref}}{% endif %}{% if relation.atribute_field_back_populates is defined %},back_populates={{relation.atribute_field_back_populates}}{% endif %}{% if relation.atribute_field_lazy is defined %},lazy={{relation.atribute_field_lazy}}{% endif %}{% if relation.atribute_uselist is defined %},uselist={{relation.atribute_uselist}}{% endif %})
     {% endif %}
     {%- endfor %}
 

@@ -131,7 +131,8 @@ class LoadModelClasses(object):
                              {
                              'relation_atribute_name': relation.get('rst_model_name'),'atribute_field': 'relationship',
                              'atribute_field_name': "'{0}'".format(relation.get('rst_model_name').capitalize()),
-                             'atribute_field_backref': "'{0}'".format(relation.get('rst_backref'))
+                             'atribute_field_backref': "'{0}'".format(relation.get('rst_backref')),
+                             'atribute_field_lazy':"'joined'"
 
                              }]
                     setattr(model, 'relationship_atributes', relation_M2O)
@@ -152,6 +153,31 @@ class LoadModelClasses(object):
 
                     target = self.get_model_by_name(list_models,relation.get('rst_model_target'))
                     setattr(target, 'relationship_atributes', relation_O2M_target)
+
+
+
+                if relation.get('type') == 'O2O':
+                    relation_O2O = [
+                             {
+                              'relation_atribute_name': '{0}_id'.format(relation.get('rst_model_name')),
+                              'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_column_fk')),
+                              'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_foreign_key'))
+                             },
+                             {
+                             'relation_atribute_name': relation.get('rst_model_name'),'atribute_field': 'relationship',
+                             'atribute_field_name': "'{0}'".format(relation.get('rst_model_name').capitalize()),
+                             'atribute_field_back_populates': "'{0}'".format(relation.get('rst_back_populates'))
+                             }]
+                    setattr(model, 'relationship_atributes', relation_O2O)
+                    relation_O2O_target = [
+                               {
+                               'relation_atribute_name': relation.get('rst_model_target_name'),'atribute_field': 'relationship',
+                               'atribute_field_name': "'{0}'".format(relation.get('rst_model_name').capitalize()),
+                               'atribute_uselist': "'False'", 'atribute_field_back_populates': "'{0}'".format(relation.get('rst_model_name'))
+                               }]
+
+                    target = self.get_model_by_name(list_models,relation.get('rst_model_target'))
+                    setattr(target, 'relationship_atributes', relation_O2O_target)
 
 
         render_to_template("Map2Rest/models.py", "model_template.py",list_models)

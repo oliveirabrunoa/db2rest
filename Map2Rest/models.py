@@ -13,7 +13,7 @@ class Postagem(Base):
     
     ##Relationships##
     categoria_id = Column('category',Integer,ForeignKey('category.id'))
-    categoria = relationship('Categoria' ,backref='postagens' ,lazy='joined')
+    categoria = relationship('Categoria',backref='postagens',lazy='joined')
     
 
 
@@ -48,7 +48,7 @@ class Livro(Base):
     isbn = Column('isbn')
     
     ##Relationships##
-    revisao = relationship('Revisao',lazy='joined')
+    revisao = relationship('Revisao')
     
 
 
@@ -69,6 +69,43 @@ class Revisao(Base):
     
     ##Relationships##
     livro_id = Column('book_id',Integer,ForeignKey('books.id'))
+
+
+    def __init__(self, **kwargs):
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+
+
+class Usuario(Base):
+    __tablename__ = "users"
+
+    id_usuario = Column('id', primary_key=True)
+    nome = Column('name')
+    
+    ##Relationships##
+    endereco = relationship('Usuario',back_populates='usuario',uselist='False')
+    
+
+
+    def __init__(self, **kwargs):
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+
+
+class Endereco(Base):
+    __tablename__ = "addresses"
+
+    id_endereco = Column('id', primary_key=True)
+    rua = Column('street')
+    cidade = Column('city')
+    estado = Column('state')
+    
+    ##Relationships##
+    usuario_id = Column('user_id',Integer,ForeignKey('users.id'))
+    usuario = relationship('Usuario',back_populates='endereco')
+    
 
 
     def __init__(self, **kwargs):
