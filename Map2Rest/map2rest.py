@@ -94,23 +94,23 @@ class LoadModelClasses(object):
         result_list = []
         for relationship in model.get_relationships():
             table_name = relationship.get('db_table_name')#Obtém o nome da tabela com o qual tem relacionamento
+            if not relationship.get('type') == "M2M":
+                if not self.check_table_exist(table_name): #verifica se a tabela de fato existe na base
+                    result_list.append({'status': 'A tabela {0} não existe na Base de Dados. Verifique os relacionamentos para o modelo no JSON de configuração e tente novamente.'
+                                   .format(table_name)})
+                    print(result_list)
+                    return False
 
-            if not self.check_table_exist(table_name): #verifica se a tabela de fato existe na base
-                result_list.append({'status': 'A tabela {0} não existe na Base de Dados. Verifique os relacionamentos para o modelo no JSON de configuração e tente novamente.'
-                               .format(table_name)})
-                print(result_list)
-                return False
+                mapper_table = inspect(self.get_table(table_name))
+                for pk in mapper_table.primary_key:
+                    if str(pk.name) == (relationship.get('db_foreign_key').split(".")[1]):
+                        result_list.append({'status': 'Relacionamento entre {0} e {1} através da foreign_key {2} encontrado!'
+                                       .format('teste','teste',relationship.get('db_foreign_key'))})
+                    else:
+                        result_list.append({'status': 'Relacionamento entre {0} e {1} através da foreign_key {2} NÃO encontrado!'
+                                       .format('teste','teste','teste')})
 
-            mapper_table = inspect(self.get_table(table_name))
-            for pk in mapper_table.primary_key:
-                if str(pk.name) == (relationship.get('db_foreign_key').split(".")[1]):
-                    result_list.append({'status': 'Relacionamento entre {0} e {1} através da foreign_key {2} encontrado!'
-                                   .format('teste','teste',relationship.get('db_foreign_key'))})
-                else:
-                    result_list.append({'status': 'Relacionamento entre {0} e {1} através da foreign_key {2} NÃO encontrado!'
-                                   .format('teste','teste','teste')})
-
-        [print(result) for result in result_list]
+            [print(result) for result in result_list]
 
 
     def generate_relationships(self):
@@ -172,12 +172,54 @@ class LoadModelClasses(object):
                     relation_O2O_target = [
                                {
                                'relation_atribute_name': relation.get('rst_model_target_name'),'atribute_field': 'relationship',
-                               'atribute_field_name': "'{0}'".format(relation.get('rst_model_name').capitalize()),
+                               'atribute_field_name': "'{0}'".format(model.__rst_model_name__),
                                'atribute_uselist': "'False'", 'atribute_field_back_populates': "'{0}'".format(relation.get('rst_model_name'))
                                }]
 
                     target = self.get_model_by_name(list_models,relation.get('rst_model_target'))
                     setattr(target, 'relationship_atributes', relation_O2O_target)
+
+                if relation.get('type') == 'M2M':
+                    relation_M2M = [
+                             {
+                              'relation_atribute_name': '{0}_id'.format(relation.get('db_association_fk_a').split('.')[0]),
+                              'atribute_field': 'Column','atribute_field_type': 'Integer', 'atribute_pk':True,
+                              'atribute_field_fk': "'{0}'".format(relation.get('db_association_fk_a'))
+                             },
+                             {
+                             'relation_atribute_name': relation.get('rst_association_atribute_a'),'atribute_field': 'relationship',
+                             'atribute_field_name': "'{0}'".format(relation.get('rst_association_a')),
+                             'atribute_field_back_populates': "'{0}'".format(relation.get('rst_back_populates_a'))
+                             },
+                             {
+                             'relation_atribute_name': '{0}_id'.format(relation.get('db_association_fk_b').split('.')[0]),
+                             'atribute_field': 'Column','atribute_field_type': 'Integer','atribute_pk':True,
+                             'atribute_field_fk': "'{0}'".format(relation.get('db_association_fk_b'))
+                             },
+                             {
+                             'relation_atribute_name': relation.get('rst_association_atribute_b'),'atribute_field': 'relationship',
+                             'atribute_field_name': "'{0}'".format(relation.get('rst_association_b')),
+                             'atribute_field_back_populates': "'{0}'".format(relation.get('rst_back_populates_b'))
+                             }]
+                    setattr(model, 'relationship_atributes', relation_M2M)
+                    relation_M2M_target_A = [
+                               {
+                               'relation_atribute_name': relation.get('rst_back_populates_a'),'atribute_field': 'relationship',
+                               'atribute_field_name': "'{0}'".format(model.__rst_model_name__),
+                               'atribute_field_back_populates': "'{0}'".format(relation.get('rst_association_atribute_a'))
+                               }]
+
+                    target = self.get_model_by_name(list_models,relation.get('rst_association_a'))
+                    setattr(target, 'relationship_atributes', relation_M2M_target_A)
+                    relation_M2M_target_B = [
+                               {
+                               'relation_atribute_name': relation.get('rst_back_populates_b'),'atribute_field': 'relationship',
+                               'atribute_field_name': "'{0}'".format(model.__rst_model_name__),
+                               'atribute_field_back_populates': "'{0}'".format(relation.get('rst_association_atribute_b'))
+                               }]
+
+                    target = self.get_model_by_name(list_models,relation.get('rst_association_b'))
+                    setattr(target, 'relationship_atributes', relation_M2M_target_B)
 
 
         render_to_template("Map2Rest/models.py", "model_template.py",list_models)

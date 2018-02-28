@@ -8,10 +8,8 @@ postagem = Blueprint("postagem", __name__)
 def lista_postagens():
     #postagens = models.Postagem.query.all()[0]
     #print(postagens.categoria.descricao)
-    b = models.Revisao.query.all()
-    for boo in b:
-        if boo.livro_id == 2:
-            print(boo.revisor_name)
+    b = models.Postagem.query.all()
+    print(b)
     return 'ok'
     #return jsonify(result=[dict(id_postagem=postagem.id_postagem, titulo=postagem.categoria) for postagem in postagens])
 
@@ -19,7 +17,7 @@ def lista_postagens():
 def testeonetoone():
     #postagens = models.Postagem.query.all()[0]
     #print(postagens.categoria.descricao)
-    b = models.UsersModel.query.all()[0]
+    b = models.Usuario.query.all()[0]
     print(b)
     return 'ok'
 

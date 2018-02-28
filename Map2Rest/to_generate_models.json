@@ -150,6 +150,58 @@
                     "db_column_fk":"user_id",
                     "rst_back_populates": "endereco"}
                   ]
+  },
+  {
+    "__rst_model_name__": "EntryModel",
+    "__db_table_name__": "entry",
+    "attributes": [{
+                      "rst_attribute_name": "id_entry",
+                      "db_column_table":"id",
+                      "db_primary_key": "True"
+                    },
+                    {
+                      "rst_attribute_name":  "titulo",
+                      "db_column_table":"title"
+                    },
+                    {
+                      "rst_attribute_name":  "conteudo",
+                      "db_column_table":"content_entry"
+                    }]
+  },
+  {
+    "__rst_model_name__": "TagModel",
+    "__db_table_name__": "tag",
+    "attributes": [{
+                      "rst_attribute_name": "id_tag",
+                      "db_column_table":"id",
+                      "db_primary_key": "True"
+                    },
+                    {
+                      "rst_attribute_name":  "nome",
+                      "db_column_table":"name"
+                    }]
+  },
+  {
+    "__rst_model_name__": "EntryTag",
+    "__db_table_name__": "entrytag",
+    "attributes": [{
+                      "rst_attribute_name": "id_entrytag",
+                      "db_column_table":"id",
+                      "db_primary_key": "True"
+                    }],
+
+    "relationships": [{
+                    "type":"M2M",
+                    "rst_association_a":"EntryModel",
+                    "rst_association_b":"TagModel",
+                    "db_association_fk_a": "entry.id",
+                    "db_association_fk_b": "tag.id",
+                    "rst_association_atribute_a": "entry",
+                    "rst_association_atribute_b": "tag",
+                    "rst_back_populates_a":"tags",
+                    "rst_back_populates_b":"entries"
+                  }
+                  ]
   }
 
 ]
