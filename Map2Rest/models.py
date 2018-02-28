@@ -10,11 +10,11 @@ class Postagem(Base):
     titulo = Column('title')
     data_postagem = Column('date')
     hora_postagem = Column('time')
-    
+
     ##Relationships##
     categoria_id = Column('category',Integer,ForeignKey('category.id'))
     categoria = relationship('Categoria',backref='postagens',lazy='joined')
-    
+
 
 
     def __init__(self, **kwargs):
@@ -28,7 +28,7 @@ class Categoria(Base):
 
     id_categoria = Column('id',Integer,primary_key=True)
     descricao = Column('name')
-    
+
     ##Relationships##
 
 
@@ -46,10 +46,10 @@ class Livro(Base):
     autor = Column('author')
     publicacao = Column('published_date')
     isbn = Column('isbn')
-    
+
     ##Relationships##
     revisao = relationship('Revisao')
-    
+
 
 
     def __init__(self, **kwargs):
@@ -66,7 +66,7 @@ class Revisao(Base):
     conteudo = Column('content')
     pontuacao = Column('rating')
     publicacao = Column('published_date')
-    
+
     ##Relationships##
     livro_id = Column('book_id',Integer,ForeignKey('books.id'))
 
@@ -82,10 +82,10 @@ class Usuario(Base):
 
     id_usuario = Column('id',Integer,primary_key=True)
     nome = Column('name')
-    
+
     ##Relationships##
     endereco = relationship('Endereco',back_populates='usuario',uselist='False')
-    
+
 
 
     def __init__(self, **kwargs):
@@ -101,11 +101,11 @@ class Endereco(Base):
     rua = Column('street')
     cidade = Column('city')
     estado = Column('state')
-    
+
     ##Relationships##
     usuario_id = Column('user_id',Integer,ForeignKey('users.id'))
     usuario = relationship('Usuario',back_populates='endereco')
-    
+
 
 
     def __init__(self, **kwargs):
@@ -120,10 +120,10 @@ class EntryModel(Base):
     id_entry = Column('id',Integer,primary_key=True)
     titulo = Column('title')
     conteudo = Column('content_entry')
-    
+
     ##Relationships##
     tags = relationship('EntryTag',back_populates='entry')
-    
+
 
 
     def __init__(self, **kwargs):
@@ -137,10 +137,10 @@ class TagModel(Base):
 
     id_tag = Column('id',Integer,primary_key=True)
     nome = Column('name')
-    
+
     ##Relationships##
     entries = relationship('EntryTag',back_populates='tag')
-    
+
 
 
     def __init__(self, **kwargs):
@@ -153,18 +153,16 @@ class EntryTag(Base):
     __tablename__ = "entrytag"
 
     id_entrytag = Column('id',Integer,primary_key=True)
-    
+
     ##Relationships##
     entry_id = Column(Integer,ForeignKey('entry.id'),primary_key=True)
     entry = relationship('EntryModel',back_populates='tags')
-    
+
     tag_id = Column(Integer,ForeignKey('tag.id'),primary_key=True)
     tag = relationship('TagModel',back_populates='entries')
-    
+
 
 
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
             setattr(self, k, v)
-
-
