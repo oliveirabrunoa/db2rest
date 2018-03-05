@@ -1,4 +1,4 @@
-# Map2Rest
+# DB2Rest
 
 ## Getting Started
 
@@ -37,8 +37,15 @@ pip install -r requirements.txt
 Setup the environment variables in the terminal
 
 ```
-export DATABASE_URL="sqlite:///test.db" #Example of one sqLite database. If not exists, the database is created.
 export APP_SETTINGS="config.DevelopmentConfig"
+```
+SQLite: 
+```
+export DATABASE_URL="sqlite:///test.db" #Example of one sqLite database. If not exists, the database is created.
+```
+Postgresql:
+```
+export DATABASE_URL="postgresql://<<<usuario>>>:<<<senha>>>@localhost/<<<DATABASE>>>"  #Replace the values between <<< >>>
 ```
 
 ### Running
