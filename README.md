@@ -85,6 +85,8 @@ Following our first example, learn how to configure the attributes that are mapp
 
 This tool is based on SQLALChemy Framework. The Framework define one especific way to map relationships, and is our job generate the code expected to Framework. For do that, some fields are required acording of each type of relationship.
 
+Pay close attention to each attribute and what it serves, as this will have a direct impact on the generated code.
+
 Following our first example... just enter one more key "relationships" in json.
 
 #Many-to-One (M2O)
@@ -132,12 +134,12 @@ Following our first example... just enter one more key "relationships" in json.
                   ],
   "relationships": [{
                   "type":"O2M", #O2M means One-to-many relationship
-                  "rst_model_name": "revisao",
-                  "rst_model_target": "Livro",
-                  "db_table_name":"books",
-                  "db_foreign_key": "books.id",
-                  "db_column_fk":"book_id",
-                  "rst_back_populates":"endereco"}
+                  "rst_model_name": "revisao", #This attribute is the name of the field that will be include in the other side of the relationship.
+                  "rst_model_target": "Livro", # Model of the web service with which it relates
+                  "db_table_name":"books", #db_table_name is The table on the database with which this model relates.
+                  "db_foreign_key": "books.id", # db_foreign_key is The attribute foreign key references on the database 
+                  "db_column_fk":"book_id", #Name of field that represente the relationship on this model.
+                  "rst_back_populates":"endereco"} # Name of field that represente the "back_populates", alow acess across other side of relationship. 
                 ]
 }
 
@@ -161,14 +163,14 @@ Following our first example... just enter one more key "relationships" in json.
                 ....more fields
                 ],
 "relationships": [{
-                "type":"O2O",
-                "rst_model_name": "usuario",
-                "rst_model_target": "Usuario",
-                "rst_model_target_name":"endereco",
+                "type":"O2O", #O2O means One-to-One relationship
+                "rst_model_name": "usuario", 
+                "rst_model_target": "Usuario", # Model of the web service with which it relates
+                "rst_model_target_name":"endereco", # Attribute that will be included on model target
                 "db_table_name":"users",
                 "db_foreign_key": "users.id",
                 "db_column_fk":"user_id",
-                "rst_back_populates": "endereco"}
+                "rst_back_populates": "endereco"} # Name of field that represente the "back_populates", alow acess across other side of relationship. 
               ]
 }
 ```
@@ -184,16 +186,16 @@ Following our first example... just enter one more key "relationships" in json.
                     "db_column_table":"id",
                     "db_primary_key": "True"
                   }],
-  "relationships": [{
-                  "type":"M2M",
-                  "rst_association_a":"EntryModel",
-                  "rst_association_b":"TagModel",
-                  "db_association_fk_a": "entry.id",
-                  "db_association_fk_b": "tag.id",
-                  "rst_association_atribute_a": "entry",
-                  "rst_association_atribute_b": "tag",
-                  "rst_back_populates_a":"tags",
-                  "rst_back_populates_b":"entries"
+  "relationships": [{ #Here, the letters A and B will be used to represente the right and left sids of relationship.
+                  "type":"M2M", #M2M means Many-to-Many relationship
+                  "rst_association_a":"EntryModel", # Model of the web service that represent left side
+                  "rst_association_b":"TagModel", #Model of the web service that represent right side
+                  "db_association_fk_a": "entry.id", # The attribute foreign key references on the database, left
+                  "db_association_fk_b": "tag.id", # The attribute foreign key references on the database, right
+                  "rst_association_atribute_a": "entry", #atribute that represents the relation on left side
+                  "rst_association_atribute_b": "tag", #atribute that represents the relation on left side
+                  "rst_back_populates_a":"tags", # Name of field that represente the "back_populates", alow acess across other side of relationship, across left
+                  "rst_back_populates_b":"entries" # Name of field that represente the "back_populates", alow acess across other side of relationship, across right
                 }
                 ]
 }
