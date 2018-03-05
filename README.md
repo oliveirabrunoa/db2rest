@@ -81,6 +81,41 @@ Following our first example, learn how to configure the attributes that are mapp
                   ]
 }
 ```
+##Configure Relationships:
+
+This tool is based on SQLALChemy Framework. The Framework define one especific way to map relationships, and is our job generate the code expected to Framework. For do that, some fields are required acording of each type of relationship.
+
+Following our first example... just enter one more key "relationships" in json.
+
+#Many-to-One (M2O)
+
+```
+{
+  "__rst_model_name__": "Postagem",
+  "__db_table_name__": "post",
+  "attributes": [{
+                    "rst_attribute_name": "id_postagem",
+                    "db_column_table":"id",
+                    "db_primary_key": "True"
+                  },
+                  {
+                    "rst_attribute_name":  "titulo",
+                    "db_column_table":"title"
+                  }],
+  
+  "relationships": [{
+                  "type":"M2O", #M2O means Many-to-many relationship
+                  "rst_model_name": "categoria", #The name of the field used on web service to get the relation (example: postagem.categoria) 
+                  "db_table_name":"category", #db_table_name is The table on the database with which this model relates.
+                  "db_foreign_key": "category.id", # db_foreign_key is The attribute foreign key references on the database 
+                  "rst_backref": "postagens"} # rst_backref is The attribute that allow to acess this model by other side of relatinship (example: categoria.postagens)
+                ]
+}
+```
+
+
+
+
 
 Execute script to generate models
 
