@@ -48,7 +48,7 @@ Postgresql:
 export DATABASE_URL="postgresql://<<<usuario>>>:<<<senha>>>@localhost/<<<DATABASE>>>"  #Replace the values between <<< >>>
 ```
 
-### Running
+### Configuring
 
 Enter the values in the configuration json, according to the instructions below. 
 
@@ -104,7 +104,7 @@ Following our first example... just enter one more key "relationships" in json.
                   }],
   
   "relationships": [{
-                  "type":"M2O", #M2O means Many-to-many relationship
+                  "type":"M2O", #M2O means Many-to-One relationship
                   "rst_model_name": "categoria", #The name of the field used on web service to get the relation (example: postagem.categoria) 
                   "db_table_name":"category", #db_table_name is The table on the database with which this model relates.
                   "db_foreign_key": "category.id", # db_foreign_key is The attribute foreign key references on the database 
@@ -113,9 +113,93 @@ Following our first example... just enter one more key "relationships" in json.
 }
 ```
 
+#One-to-Many (O2M)
 
+```
+{
+  "__rst_model_name__": "Revisao",
+  "__db_table_name__": "reviews",
+  "attributes": [{
+                    "rst_attribute_name": "id",
+                    "db_column_table":"id",
+                    "db_primary_key": "True"
+                  },
+                  {
+                    "rst_attribute_name":  "revisor_name",
+                    "db_column_table":"reviewer_name"
+                  }
+                  .... more fields
+                  ],
+  "relationships": [{
+                  "type":"O2M", #O2M means One-to-many relationship
+                  "rst_model_name": "revisao",
+                  "rst_model_target": "Livro",
+                  "db_table_name":"books",
+                  "db_foreign_key": "books.id",
+                  "db_column_fk":"book_id",
+                  "rst_back_populates":"endereco"}
+                ]
+}
 
+```
 
+#One-to-One(O2O)
+
+```
+{
+"__rst_model_name__": "Endereco",
+"__db_table_name__": "addresses",
+"attributes": [{
+                  "rst_attribute_name": "id_endereco",
+                  "db_column_table":"id",
+                  "db_primary_key": "True"
+                },
+                {
+                  "rst_attribute_name":  "rua",
+                  "db_column_table":"street"
+                }
+                ....more fields
+                ],
+"relationships": [{
+                "type":"O2O",
+                "rst_model_name": "usuario",
+                "rst_model_target": "Usuario",
+                "rst_model_target_name":"endereco",
+                "db_table_name":"users",
+                "db_foreign_key": "users.id",
+                "db_column_fk":"user_id",
+                "rst_back_populates": "endereco"}
+              ]
+}
+```
+
+#Many-to-Many (M2M)
+
+```
+{
+  "__rst_model_name__": "EntryTag",
+  "__db_table_name__": "entrytag",
+  "attributes": [{
+                    "rst_attribute_name": "id_entrytag",
+                    "db_column_table":"id",
+                    "db_primary_key": "True"
+                  }],
+  "relationships": [{
+                  "type":"M2M",
+                  "rst_association_a":"EntryModel",
+                  "rst_association_b":"TagModel",
+                  "db_association_fk_a": "entry.id",
+                  "db_association_fk_b": "tag.id",
+                  "rst_association_atribute_a": "entry",
+                  "rst_association_atribute_b": "tag",
+                  "rst_back_populates_a":"tags",
+                  "rst_back_populates_b":"entries"
+                }
+                ]
+}
+```
+
+### Running
 
 Execute script to generate models
 
