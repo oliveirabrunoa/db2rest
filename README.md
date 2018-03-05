@@ -50,6 +50,38 @@ export DATABASE_URL="postgresql://<<<usuario>>>:<<<senha>>>@localhost/<<<DATABA
 
 ### Running
 
+Enter the values in the configuration json, according to the instructions below. 
+
+#Configuring Models:
+
+The fields preceding "rst" area to identify the models on web service and "db" represent the Legacy Database fields.
+```
+{
+  "__rst_model_name__": "Postagem", #The name of the Model on Web Service
+  "__db_table_name__": "post", #The table on the Legacy Database
+}
+```
+
+#Configuring Attributes:
+
+Following our first example, learn how to configure the attributes that are mapped.
+```
+{
+  "__rst_model_name__": "Postagem", #The name of the Model on Web Service
+  "__db_table_name__": "post", #The table on the Legacy Database
+  "attributes": [{ # JSON list of all attributes expected
+                      "rst_attribute_name": "id_postagem", #Attribute expected by Web Service
+                      "db_column_table":"id", #Column of the database that will be represented on Web Service
+                      "db_primary_key": "True" #Especial field that indicates that field is a primary key.
+                    },
+                    {
+                      "rst_attribute_name":  "titulo", #Attribute expected by Web Service
+                      "db_column_table":"title" #Column of the database that will be represented on Web Service
+                     }
+                  ]
+}
+```
+
 Execute script to generate models
 
 ```
