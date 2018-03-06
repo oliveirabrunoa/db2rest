@@ -107,7 +107,8 @@ Following our first example... just enter one more key "relationships" in json.
   
   "relationships": [{
                   "type":"M2O", #M2O means Many-to-One relationship
-                  "rst_model_name": "categoria", #The name of the field used on web service to get the relation (example: postagem.categoria) 
+                  "rst_model_name": "categoria", #The name of the field used on web service to get the relation (example: postagem.categoria)
+                  "rst_model_target": "UserType", # Model of the web service with which it relates
                   "db_table_name":"category", #db_table_name is The table on the database with which this model relates.
                   "db_foreign_key": "category.id", # db_foreign_key is The attribute foreign key references on the database 
                   "rst_backref": "postagens"} # rst_backref is The attribute that allow to acess this model by other side of relatinship (example: categoria.postagens)
