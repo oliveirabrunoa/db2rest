@@ -130,7 +130,7 @@ class LoadModelClasses(object):
                              },
                              {
                              'relation_atribute_name': relation.get('rst_model_name'),'atribute_field': 'relationship',
-                             'atribute_field_name': "'{0}'".format(relation.get('rst_model_name').capitalize()),
+                             'atribute_field_name': "'{0}'".format(relation.get('rst_model_target')),
                              'atribute_field_backref': "'{0}'".format(relation.get('rst_backref')),
                              'atribute_field_lazy':"'joined'"
 
