@@ -130,12 +130,16 @@ class LoadModelClasses(object):
                              },
                              {
                              'relation_atribute_name': relation.get('rst_model_name'),'atribute_field': 'relationship',
-                             'atribute_field_name': "'{0}'".format(relation.get('rst_model_target')),
+                             'atribute_field_name': "'{0}'".format(relation.get('rst_model_name').capitalize()),
                              'atribute_field_backref': "'{0}'".format(relation.get('rst_backref')),
                              'atribute_field_lazy':"'joined'"
 
                              }]
-                    setattr(model, 'relationship_atributes', relation_M2O)
+                    if not getattr(model, 'relationship_atributes', None):
+                        setattr(model, 'relationship_atributes', relation_M2O)
+                    else:
+                        setattr(model, 'relationship_atributes', getattr(model, 'relationship_atributes') + relation_M2O)
+
 
                 if relation.get('type') == 'O2M':
                     relation_O2M = [
@@ -144,7 +148,12 @@ class LoadModelClasses(object):
                              'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_column_fk')),
                              'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_foreign_key'))
                              }]
-                    setattr(model, 'relationship_atributes', relation_O2M)
+
+                    if not getattr(model, 'relationship_atributes', None):
+                        setattr(model, 'relationship_atributes', relation_O2M)
+                    else:
+                        setattr(model, 'relationship_atributes', getattr(model, 'relationship_atributes') + relation_O2M)
+
                     relation_O2M_target = [
                                {
                                'relation_atribute_name': relation.get('rst_model_name'),'atribute_field': 'relationship',
@@ -152,9 +161,11 @@ class LoadModelClasses(object):
                                }]
 
                     target = self.get_model_by_name(list_models,relation.get('rst_model_target'))
-                    setattr(target, 'relationship_atributes', relation_O2M_target)
 
-
+                    if not getattr(target, 'relationship_atributes', None):
+                        setattr(target, 'relationship_atributes', relation_O2M_target)
+                    else:
+                        setattr(target, 'relationship_atributes', getattr(target, 'relationship_atributes') + relation_O2M_target)
 
                 if relation.get('type') == 'O2O':
                     relation_O2O = [
@@ -168,7 +179,11 @@ class LoadModelClasses(object):
                              'atribute_field_name': "'{0}'".format(relation.get('rst_model_name').capitalize()),
                              'atribute_field_back_populates': "'{0}'".format(relation.get('rst_back_populates'))
                              }]
-                    setattr(model, 'relationship_atributes', relation_O2O)
+                    if not getattr(model, 'relationship_atributes', None):
+                        setattr(model, 'relationship_atributes', relation_O2O)
+                    else:
+                        setattr(model, 'relationship_atributes', getattr(model, 'relationship_atributes') + relation_O2O)
+
                     relation_O2O_target = [
                                {
                                'relation_atribute_name': relation.get('rst_model_target_name'),'atribute_field': 'relationship',
@@ -177,7 +192,11 @@ class LoadModelClasses(object):
                                }]
 
                     target = self.get_model_by_name(list_models,relation.get('rst_model_target'))
-                    setattr(target, 'relationship_atributes', relation_O2O_target)
+
+                    if not getattr(target, 'relationship_atributes', None):
+                        setattr(target, 'relationship_atributes', relation_O2O_target)
+                    else:
+                        setattr(target, 'relationship_atributes', getattr(target, 'relationship_atributes') + relation_O2O_target)
 
                 if relation.get('type') == 'M2M':
                     relation_M2M = [
@@ -201,7 +220,12 @@ class LoadModelClasses(object):
                              'atribute_field_name': "'{0}'".format(relation.get('rst_association_b')),
                              'atribute_field_back_populates': "'{0}'".format(relation.get('rst_back_populates_b'))
                              }]
-                    setattr(model, 'relationship_atributes', relation_M2M)
+
+                    if not getattr(model, 'relationship_atributes', None):
+                        setattr(model, 'relationship_atributes', relation_M2M)
+                    else:
+                        setattr(model, 'relationship_atributes', getattr(model, 'relationship_atributes') + relation_M2M)
+
                     relation_M2M_target_A = [
                                {
                                'relation_atribute_name': relation.get('rst_back_populates_a'),'atribute_field': 'relationship',
@@ -209,8 +233,13 @@ class LoadModelClasses(object):
                                'atribute_field_back_populates': "'{0}'".format(relation.get('rst_association_atribute_a'))
                                }]
 
-                    target = self.get_model_by_name(list_models,relation.get('rst_association_a'))
-                    setattr(target, 'relationship_atributes', relation_M2M_target_A)
+                    target_a = self.get_model_by_name(list_models,relation.get('rst_association_a'))
+
+                    if not getattr(target_a, 'relationship_atributes', None):
+                        setattr(target_a, 'relationship_atributes', relation_M2M_target_A)
+                    else:
+                        setattr(target_a, 'relationship_atributes', getattr(target_a, 'relationship_atributes') + relation_M2M_target_A)
+
                     relation_M2M_target_B = [
                                {
                                'relation_atribute_name': relation.get('rst_back_populates_b'),'atribute_field': 'relationship',
@@ -218,9 +247,13 @@ class LoadModelClasses(object):
                                'atribute_field_back_populates': "'{0}'".format(relation.get('rst_association_atribute_b'))
                                }]
 
-                    target = self.get_model_by_name(list_models,relation.get('rst_association_b'))
-                    setattr(target, 'relationship_atributes', relation_M2M_target_B)
+                    target_b = self.get_model_by_name(list_models,relation.get('rst_association_b'))
 
+                    if not getattr(target_b, 'relationship_atributes', None):
+                        setattr(target_b, 'relationship_atributes', relation_M2M_target_B)
+                    else:
+                        setattr(target_b, 'relationship_atributes', getattr(target_b, 'relationship_atributes') + relation_M2M_target_B)
+                    
 
         render_to_template("Map2Rest/models.py", "model_template.py",list_models)
 

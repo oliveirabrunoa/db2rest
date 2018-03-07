@@ -26,7 +26,7 @@
     "relationships": [{
                     "type":"M2O",
                     "rst_model_name": "categoria",
-                    "rst_model_target": "Categoria",
+                    "rst_model_target": "UserType",
                     "db_table_name":"category",
                     "db_foreign_key": "category.id",
                     "rst_backref": "postagens"}
