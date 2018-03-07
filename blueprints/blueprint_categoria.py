@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
 import datetime
-from Map2Rest import models
+from DB2Rest import models
 
 categoria = Blueprint("categoria", __name__)
 

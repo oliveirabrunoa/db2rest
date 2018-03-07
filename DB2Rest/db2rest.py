@@ -1,5 +1,5 @@
-from Map2Rest.db import Base, db_session, engine, meta
-from Map2Rest.render_template import render_to_template
+from DB2Rest.db import Base, db_session, engine, meta
+from DB2Rest.render_template import render_to_template
 import json, pdb, os, importlib
 from sqlalchemy import inspect
 
@@ -227,7 +227,7 @@ class LoadModelClasses(object):
                     target_b = self.get_model_by_name(list_models,relation.get('rst_association_b'))
                     self.relationship_atributes_attrs(target_b,relation_M2M_target_B)
 
-        render_to_template("Map2Rest/models.py", "model_template.py",list_models)
+        render_to_template("DB2Rest/models.py", "model_template.py",list_models)
 
 
     def get_model_by_name(self, list_models, model_name):
