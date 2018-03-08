@@ -75,11 +75,11 @@ class LoadModelClasses(object):
     #Geração do arquivo contendo os modelos.
     def generate_models(self):
         list_models = self.models_list()
-        print('Gerando modelos...')
+        print("Gerando modelos...")
         for model in list_models:
             if self.check_model_attributes(model):
                 setattr(model, 'attributes', model.get_model_attributes())
-                print('O modelo {0} correspondente a tabela {1} foi criado com sucesso!'.format(model.__rst_model_name__, model.__db_table_name__))
+                print('Modelo->Tabela: {0} >>>> {1}'.format(model.__rst_model_name__, model.__db_table_name__))
             else:
                 print('O __tablename__ informado para o modelo {0} não existe na base de dados.'.format(model.__modelname__))
                 exit()
@@ -98,19 +98,15 @@ class LoadModelClasses(object):
                 if not self.check_table_exist(table_name): #verifica se a tabela de fato existe na base
                     result_list.append({'status': 'A tabela {0} não existe na Base de Dados. Verifique os relacionamentos para o modelo no JSON de configuração e tente novamente.'
                                    .format(table_name)})
-                    print(result_list)
                     return False
 
                 mapper_table = inspect(self.get_table(table_name))
                 for pk in mapper_table.primary_key:
-                    if str(pk.name) == (relationship.get('db_foreign_key').split(".")[1]):
-                        result_list.append({'status': 'Relacionamento entre {0} e {1} através da foreign_key {2} encontrado!'
-                                       .format('teste','teste',relationship.get('db_foreign_key'))})
-                    else:
-                        result_list.append({'status': 'Relacionamento entre {0} e {1} através da foreign_key {2} NÃO encontrado!'
-                                       .format('teste','teste','teste')})
+                    if not str(pk.name) == (relationship.get('db_foreign_key').split(".")[1]):
+                        result_list.append({'relationships': 'Relacionamento entre {0} e {1} através da foreign_key {2} NÃO encontrado!'
+                                       .format(model.__db_table_name__,relationship.get('db_table_name'),relationship.get('db_foreign_key'))})
 
-            [print(result) for result in result_list]
+            return result_list
 
 
     def relationship_atributes_attrs(self, model, relation_list):
@@ -121,11 +117,11 @@ class LoadModelClasses(object):
             setattr(model, 'relationship_atributes', getattr(model, 'relationship_atributes') + relation_list)
             return model
 
-    def generate_relationships(self):
-        list_models = self.generate_models()
+    def generate_relationships(self,list_models):
+        print('Verificando relacionamentos....')
         for model in list_models:
             if not model.get_relationships():
-                print('O modelo {0} não possui relacionamentos definidos no arquivo de configuração.'.format(model.__rst_model_name__))
+                #print('O modelo {0} não possui relacionamentos definidos no arquivo de configuração.'.format(model.__rst_model_name__))
                 continue
 
             for relation in model.get_relationships():
@@ -239,11 +235,12 @@ class LoadModelClasses(object):
 
     def generate_file(self):
        list_models = self.generate_models()
+       relations=[]
        for model in list_models:
-           print(model.__rst_model_name__)
-           self.check_relationships(model)
-       self.generate_relationships()
-
+           relations.append(self.check_relationships(model))
+       self.generate_relationships(list_models)
+       [print(r) for r in relations if r]
+       print('Arquivo models.py gerado com sucesso! Realize o import deste arquivo para uso dos serviços!')
 
 class ModelHelper(object):
 
