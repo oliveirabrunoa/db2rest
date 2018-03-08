@@ -13,7 +13,7 @@ class Postagem(Base):
     
     ##Relationships##
     categoria_id = Column('category',Integer,ForeignKey('category.id'))
-    categoria = relationship('Categoria',backref='postagens',lazy='joined')
+    categoria = relationship('UserType',backref='postagens',lazy='joined')
     
 
 

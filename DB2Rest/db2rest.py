@@ -93,18 +93,20 @@ class LoadModelClasses(object):
 
         result_list = []
         for relationship in model.get_relationships():
-            table_name = relationship.get('db_table_name')#Obtém o nome da tabela com o qual tem relacionamento
-            if not relationship.get('type') == "M2M":
-                if not self.check_table_exist(table_name): #verifica se a tabela de fato existe na base
-                    result_list.append({'status': 'A tabela {0} não existe na Base de Dados. Verifique os relacionamentos para o modelo no JSON de configuração e tente novamente.'
-                                   .format(table_name)})
-                    return False
+            table_db_foreign_key = relationship.get('db_foreign_key')#Obtém o nome da tabela com o qual tem relacionamento
+            if table_db_foreign_key:
+                table_name = table_db_foreign_key.split('.')[0]
+                if not relationship.get('type') == "M2M":
+                    if not self.check_table_exist(table_name): #verifica se a tabela de fato existe na base
+                        result_list.append({'status': 'A tabela {0} não existe na Base de Dados. Verifique os relacionamentos para o modelo no JSON de configuração e tente novamente.'
+                                       .format(table_name)})
+                        return False
 
-                mapper_table = inspect(self.get_table(table_name))
-                for pk in mapper_table.primary_key:
-                    if not str(pk.name) == (relationship.get('db_foreign_key').split(".")[1]):
-                        result_list.append({'relationships': 'Relacionamento entre {0} e {1} através da foreign_key {2} NÃO encontrado!'
-                                       .format(model.__db_table_name__,relationship.get('db_table_name'),relationship.get('db_foreign_key'))})
+                    mapper_table = inspect(self.get_table(table_name))
+                    for pk in mapper_table.primary_key:
+                        if not str(pk.name) == (relationship.get('db_foreign_key').split(".")[1]):
+                            result_list.append({'relationships': 'Relacionamento entre {0} e {1} através da foreign_key {2} NÃO encontrado!'
+                                           .format(model.__db_table_name__,relationship.get('db_table_name'),relationship.get('db_foreign_key'))})
 
             return result_list
 
@@ -134,7 +136,7 @@ class LoadModelClasses(object):
                              },
                              {
                              'relation_atribute_name': relation.get('rst_model_name'),'atribute_field': 'relationship',
-                             'atribute_field_name': "'{0}'".format(relation.get('rst_model_name').capitalize()),
+                             'atribute_field_name': "'{0}'".format(relation.get('rst_model_target')),
                              'atribute_field_backref': "'{0}'".format(relation.get('rst_backref')),
                              'atribute_field_lazy':"'joined'"
                              }]
