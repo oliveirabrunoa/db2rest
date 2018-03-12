@@ -10,11 +10,11 @@ class Postagem(Base):
     titulo = Column('title')
     data_postagem = Column('date')
     hora_postagem = Column('time')
-    
+
     ##Relationships##
     categoria_id = Column('category',Integer,ForeignKey('category.id'))
     categoria = relationship('Categoria',back_populates='postagens',lazy='joined')
-    
+
 
 
     def __init__(self, **kwargs):
@@ -28,10 +28,10 @@ class Categoria(Base):
 
     id_categoria = Column('id',Integer,primary_key=True)
     descricao = Column('name')
-    
+
     ##Relationships##
     postagens = relationship('Postagem',back_populates='categoria')
-    
+
 
 
     def __init__(self, **kwargs):
@@ -48,10 +48,10 @@ class Livro(Base):
     autor = Column('author')
     publicacao = Column('published_date')
     isbn = Column('isbn')
-    
+
     ##Relationships##
     revisao = relationship('Revisao',back_populates='livro')
-    
+
 
 
     def __init__(self, **kwargs):
@@ -68,11 +68,11 @@ class Revisao(Base):
     conteudo = Column('content')
     pontuacao = Column('rating')
     publicacao = Column('published_date')
-    
+
     ##Relationships##
     livro_id = Column('book_id',Integer,ForeignKey('books.id'))
     livro = relationship('Livro',back_populates='revisao',lazy='joined')
-    
+
 
 
     def __init__(self, **kwargs):
@@ -80,3 +80,38 @@ class Revisao(Base):
             setattr(self, k, v)
 
 
+
+class Usuario(Base):
+    __tablename__ = "users"
+
+    id_usuario = Column('id',Integer,primary_key=True)
+    nome = Column('name')
+
+    ##Relationships##
+    endereco = relationship('Endereco',back_populates='usuario',uselist=False)
+
+
+
+    def __init__(self, **kwargs):
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+
+
+class Endereco(Base):
+    __tablename__ = "addresses"
+
+    id_endereco = Column('id',Integer,primary_key=True)
+    rua = Column('street')
+    cidade = Column('city')
+    estado = Column('state')
+
+    ##Relationships##
+    usuario_id = Column('user_id',Integer,ForeignKey('users.id'))
+    usuario = relationship('Usuario',back_populates='endereco')
+
+
+
+    def __init__(self, **kwargs):
+        for k, v in kwargs.items():
+            setattr(self, k, v)

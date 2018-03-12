@@ -103,5 +103,49 @@
                     "db_referencing_fk":"book_id",
                     "rst_referenced_backref":"revisao"}
                  ]
- }
+ },
+ {
+  "__rst_model_name__": "Usuario",
+  "__db_table_name__": "users",
+  "attributes": [{
+                    "rst_attribute_name": "id_usuario",
+                    "db_column_table":"id",
+                    "db_primary_key": "True"
+                  },
+                  {
+                    "rst_attribute_name":  "nome",
+                    "db_column_table":"name"
+                  }]
+},
+{
+  "__rst_model_name__": "Endereco",
+  "__db_table_name__": "addresses",
+  "attributes": [{
+                    "rst_attribute_name": "id_endereco",
+                    "db_column_table":"id",
+                    "db_primary_key": "True"
+                  },
+                  {
+                    "rst_attribute_name":  "rua",
+                    "db_column_table":"street"
+                  },
+                  {
+                    "rst_attribute_name":  "cidade",
+                    "db_column_table":"city"
+                  },
+                  {
+                    "rst_attribute_name":  "estado",
+                    "db_column_table":"state"
+                  }],
+
+  "relationships": [{
+                    "type":"O2O",
+                    "rst_referencing_name": "usuario",
+                    "rst_referenced_model": "Usuario",
+                    "db_referenced_table":"users",
+                    "db_referenced_table_pk": "users.id",
+                    "db_referencing_fk":"user_id",
+                    "rst_referenced_backref": "endereco"}
+                ]
+}
 ]

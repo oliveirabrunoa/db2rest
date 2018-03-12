@@ -179,24 +179,24 @@ class LoadModelClasses(object):
                 if relation.get('type') == 'O2O':
                     relation_O2O = [
                              {
-                              'relation_atribute_name': '{0}_id'.format(relation.get('rst_model_name')),
-                              'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_column_fk')),
-                              'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_foreign_key'))
+                              'relation_atribute_name': '{0}_id'.format(relation.get('rst_referencing_name')),
+                              'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_referencing_fk')),
+                              'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_pk'))
                              },
                              {
-                             'relation_atribute_name': relation.get('rst_model_name'),'atribute_field': 'relationship',
-                             'atribute_field_name': "'{0}'".format(relation.get('rst_model_name').capitalize()),
-                             'atribute_field_back_populates': "'{0}'".format(relation.get('rst_back_populates'))
+                             'relation_atribute_name': relation.get('rst_referencing_name'),'atribute_field': 'relationship',
+                             'atribute_field_name': "'{0}'".format(relation.get('rst_referencing_name').capitalize()),
+                             'atribute_field_back_populates': "'{0}'".format(relation.get('rst_referenced_backref'))
                              }]
                     self.relationship_atributes_attrs(model,relation_O2O)
 
                     relation_O2O_target = [
                                {
-                               'relation_atribute_name': relation.get('rst_model_target_name'),'atribute_field': 'relationship',
+                               'relation_atribute_name': relation.get('rst_referenced_backref'),'atribute_field': 'relationship',
                                'atribute_field_name': "'{0}'".format(model.__rst_model_name__),
-                               'atribute_uselist': "'False'", 'atribute_field_back_populates': "'{0}'".format(relation.get('rst_model_name'))
+                               'atribute_uselist': False, 'atribute_field_back_populates': "'{0}'".format(relation.get('rst_referencing_name'))
                                }]
-                    target = self.get_model_by_name(list_models,relation.get('rst_model_target'))
+                    target = self.get_model_by_name(list_models,relation.get('rst_referenced_model'))
                     self.relationship_atributes_attrs(target,relation_O2O_target)
 
                 if relation.get('type') == 'M2M':
