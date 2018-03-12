@@ -106,7 +106,7 @@ class LoadModelClasses(object):
                     for pk in mapper_table.primary_key:
                         if not str(pk.name) == (relationship.get('db_foreign_key').split(".")[1]):
                             result_list.append({'relationships': 'Relacionamento entre {0} e {1} através da foreign_key {2} NÃO encontrado!'
-                                           .format(model.__db_table_name__,relationship.get('db_table_name'),relationship.get('db_foreign_key'))})
+                                           .format(model.__db_table_name__,relationship.get('db_referenced_table'),relationship.get('db_foreign_key'))})
 
             return result_list
 
@@ -129,18 +129,27 @@ class LoadModelClasses(object):
             for relation in model.get_relationships():
                 if relation.get('type') == 'M2O':
                     relation_M2O = [
-                             {
-                             'relation_atribute_name': '{0}_id'.format(relation.get('rst_model_name')),
-                             'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_table_name')),
-                             'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_foreign_key'))
+                            {
+                             'relation_atribute_name': '{0}_id'.format(relation.get('rst_referencing_name')),
+                             'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_referenced_table')),
+                             'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_fk'))
                              },
                              {
-                             'relation_atribute_name': relation.get('rst_model_name'),'atribute_field': 'relationship',
-                             'atribute_field_name': "'{0}'".format(relation.get('rst_model_target')),
-                             'atribute_field_backref': "'{0}'".format(relation.get('rst_backref')),
+                             'relation_atribute_name': relation.get('rst_referencing_name'),'atribute_field': 'relationship',
+                             'atribute_field_name': "'{0}'".format(relation.get('rst_referenced_model')),
+                             'atribute_field_backref': "'{0}'".format(relation.get('rst_referenced_backref')),
                              'atribute_field_lazy':"'joined'"
                              }]
                     self.relationship_atributes_attrs(model,relation_M2O)
+
+                    relation_M2O_target = [
+                               {
+                               'relation_atribute_name': relation.get('rst_referenced_backref'),'atribute_field': 'relationship',
+                               'atribute_field_name': "'{0}'".format(model.__rst_model_name__),
+                               'atribute_field_backref':"'{0}'".format(relation.get('rst_referencing_name'))
+                               }]
+                    target = self.get_model_by_name(list_models,relation.get('rst_referenced_model'))
+                    self.relationship_atributes_attrs(target,relation_M2O_target)
 
                 if relation.get('type') == 'O2M':
                     relation_O2M = [

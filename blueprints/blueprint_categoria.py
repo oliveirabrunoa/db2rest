@@ -8,4 +8,4 @@ categoria = Blueprint("categoria", __name__)
 def lista_categorias():
     categorias = models.Categoria.query.all()
     return jsonify(result=[dict(id_categoria=categoria.id_categoria,
-                                description=categoria.descricao) for categoria in categorias])
+                                description=categoria.descricao, postagens=str(categoria.postagens)) for categoria in categorias])

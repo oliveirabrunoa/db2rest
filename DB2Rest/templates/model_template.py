@@ -1,6 +1,6 @@
 from DB2Rest.db import Base
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import relationship, back_populates
 
 {% for model in data %}
 class {{model.__rst_model_name__}}(Base):
@@ -14,7 +14,7 @@ class {{model.__rst_model_name__}}(Base):
     {% if relation.atribute_field == "Column" %}
     {{relation.relation_atribute_name}} = {{relation.atribute_field}}({% if relation.atribute_field_name is defined %}{{relation.atribute_field_name}},{% endif %}{{relation.atribute_field_type}},ForeignKey({{relation.atribute_field_fk}}){% if relation.atribute_pk is defined %},primary_key={{relation.atribute_pk}}{% endif %})
     {%- else %}
-    {{relation.relation_atribute_name}} = {{relation.atribute_field}}({{relation.atribute_field_name}}{% if relation.atribute_field_backref is defined %},backref={{relation.atribute_field_backref}}{% endif %}{% if relation.atribute_field_back_populates is defined %},back_populates={{relation.atribute_field_back_populates}}{% endif %}{% if relation.atribute_field_lazy is defined %},lazy={{relation.atribute_field_lazy}}{% endif %}{% if relation.atribute_uselist is defined %},uselist={{relation.atribute_uselist}}{% endif %})
+    {{relation.relation_atribute_name}} = {{relation.atribute_field}}({{relation.atribute_field_name}}{% if relation.atribute_field_backref is defined %},back_populates={{relation.atribute_field_backref}}{% endif %}{% if relation.atribute_field_back_populates is defined %},back_populates={{relation.atribute_field_back_populates}}{% endif %}{% if relation.atribute_field_lazy is defined %},lazy={{relation.atribute_field_lazy}}{% endif %}{% if relation.atribute_uselist is defined %},uselist={{relation.atribute_uselist}}{% endif %})
     {% endif %}
     {%- endfor %}
 
