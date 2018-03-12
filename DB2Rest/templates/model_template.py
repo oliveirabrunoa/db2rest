@@ -1,6 +1,6 @@
 from DB2Rest.db import Base
 from sqlalchemy import Column, Integer, String, ForeignKey
-from sqlalchemy.orm import relationship, back_populates
+from sqlalchemy.orm import relationship
 
 {% for model in data %}
 class {{model.__rst_model_name__}}(Base):

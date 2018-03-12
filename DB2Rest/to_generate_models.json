@@ -24,15 +24,13 @@
                           "db_columns": "date|time"
                         }],
     "relationships": [{
-                    "type":"M2O",
-                    "rst_model_name": "categoria",
-                    "rst_model_target": "Categoria",
-                    "db_table_name":"category",
-                    "db_foreign_key": "category.id",
-                    "rst_backref": "postagens"}
-                  ]
+                          "type":"M2O",
+                          "rst_referencing_name": "categoria",
+                          "rst_referenced_model": "Categoria",
+                          "db_referenced_table":"category",
+                          "db_referenced_table_fk": "category.id",
+                          "rst_referenced_backref": "postagens"}]
   },
-
   {
     "__rst_model_name__": "Categoria",
     "__db_table_name__": "category",
@@ -46,163 +44,64 @@
                       "db_column_table":"name"
                     }]
   },
-
   {
-    "__rst_model_name__": "Livro",
-    "__db_table_name__": "books",
-    "attributes": [{
-                      "rst_attribute_name": "id",
-                      "db_column_table":"id",
-                      "db_primary_key": "True"
-                    },
-                    {
-                      "rst_attribute_name":  "titulo",
-                      "db_column_table":"title"
-                    },
-                    {
-                      "rst_attribute_name":  "autor",
-                      "db_column_table":"author"
-                    },
-                    {
-                      "rst_attribute_name":  "publicacao",
-                      "db_column_table":"published_date"
-                    },
-                    {
-                      "rst_attribute_name":  "isbn",
-                      "db_column_table":"isbn"
-                    }]
+   "__rst_model_name__": "Livro",
+   "__db_table_name__": "books",
+   "attributes": [{
+                     "rst_attribute_name": "id",
+                     "db_column_table":"id",
+                     "db_primary_key": "True"
+                   },
+                   {
+                     "rst_attribute_name":  "titulo",
+                     "db_column_table":"title"
+                   },
+                   {
+                     "rst_attribute_name":  "autor",
+                     "db_column_table":"author"
+                   },
+                   {
+                     "rst_attribute_name":  "publicacao",
+                     "db_column_table":"published_date"
+                   },
+                   {
+                     "rst_attribute_name":  "isbn",
+                     "db_column_table":"isbn"
+                   }]
 
-  },
-  {
-    "__rst_model_name__": "Revisao",
-    "__db_table_name__": "reviews",
-    "attributes": [{
-                      "rst_attribute_name": "id",
-                      "db_column_table":"id",
-                      "db_primary_key": "True"
-                    },
-                    {
-                      "rst_attribute_name":  "revisor_name",
-                      "db_column_table":"reviewer_name"
-                    },
-                    {
-                      "rst_attribute_name":  "conteudo",
-                      "db_column_table":"content"
-                    },
-                    {
-                      "rst_attribute_name":  "pontuacao",
-                      "db_column_table":"rating"
-                    },
-                    {
-                      "rst_attribute_name":  "publicacao",
-                      "db_column_table":"published_date"
-                    }],
-    "relationships": [{
+ },
+ {
+   "__rst_model_name__": "Revisao",
+   "__db_table_name__": "reviews",
+   "attributes": [{
+                     "rst_attribute_name": "id",
+                     "db_column_table":"id",
+                     "db_primary_key": "True"
+                   },
+                   {
+                     "rst_attribute_name":  "revisor_name",
+                     "db_column_table":"reviewer_name"
+                   },
+                   {
+                     "rst_attribute_name":  "conteudo",
+                     "db_column_table":"content"
+                   },
+                   {
+                     "rst_attribute_name":  "pontuacao",
+                     "db_column_table":"rating"
+                   },
+                   {
+                     "rst_attribute_name":  "publicacao",
+                     "db_column_table":"published_date"
+                   }],
+   "relationships": [{
                     "type":"O2M",
-                    "rst_model_name": "revisao",
-                    "rst_model_target": "Livro",
-                    "db_table_name":"books",
-                    "db_foreign_key": "books.id",
-                    "db_column_fk":"book_id",
-                    "rst_back_populates":"endereco"}
-                  ]
-  },
-  {
-    "__rst_model_name__": "Usuario",
-    "__db_table_name__": "users",
-    "attributes": [{
-                      "rst_attribute_name": "id_usuario",
-                      "db_column_table":"id",
-                      "db_primary_key": "True"
-                    },
-                    {
-                      "rst_attribute_name":  "nome",
-                      "db_column_table":"name"
-                    }]
-  },
-  {
-    "__rst_model_name__": "Endereco",
-    "__db_table_name__": "addresses",
-    "attributes": [{
-                      "rst_attribute_name": "id_endereco",
-                      "db_column_table":"id",
-                      "db_primary_key": "True"
-                    },
-                    {
-                      "rst_attribute_name":  "rua",
-                      "db_column_table":"street"
-                    },
-                    {
-                      "rst_attribute_name":  "cidade",
-                      "db_column_table":"city"
-                    },
-                    {
-                      "rst_attribute_name":  "estado",
-                      "db_column_table":"state"
-                    }],
-
-    "relationships": [{
-                    "type":"O2O",
-                    "rst_model_name": "usuario",
-                    "rst_model_target": "Usuario",
-                    "rst_model_target_name":"endereco",
-                    "db_table_name":"users",
-                    "db_foreign_key": "users.id",
-                    "db_column_fk":"user_id",
-                    "rst_back_populates": "endereco"}
-                  ]
-  },
-  {
-    "__rst_model_name__": "EntryModel",
-    "__db_table_name__": "entry",
-    "attributes": [{
-                      "rst_attribute_name": "id_entry",
-                      "db_column_table":"id",
-                      "db_primary_key": "True"
-                    },
-                    {
-                      "rst_attribute_name":  "titulo",
-                      "db_column_table":"title"
-                    },
-                    {
-                      "rst_attribute_name":  "conteudo",
-                      "db_column_table":"content_entry"
-                    }]
-  },
-  {
-    "__rst_model_name__": "TagModel",
-    "__db_table_name__": "tag",
-    "attributes": [{
-                      "rst_attribute_name": "id_tag",
-                      "db_column_table":"id",
-                      "db_primary_key": "True"
-                    },
-                    {
-                      "rst_attribute_name":  "nome",
-                      "db_column_table":"name"
-                    }]
-  },
-  {
-    "__rst_model_name__": "EntryTag",
-    "__db_table_name__": "entrytag",
-    "attributes": [{
-                      "rst_attribute_name": "id_entrytag",
-                      "db_column_table":"id",
-                      "db_primary_key": "True"
-                    }],
-
-    "relationships": [{
-                    "type":"M2M",
-                    "rst_association_a":"EntryModel",
-                    "rst_association_b":"TagModel",
-                    "db_association_fk_a": "entry.id",
-                    "db_association_fk_b": "tag.id",
-                    "rst_association_atribute_a": "entry",
-                    "rst_association_atribute_b": "tag",
-                    "rst_back_populates_a":"tags",
-                    "rst_back_populates_b":"entries"
-                  }
-                  ]
-  }
-
+                    "rst_referencing_name": "livro",
+                    "rst_referenced_model": "Livro",
+                    "db_referenced_table":"books",
+                    "db_referenced_table_pk": "books.id",
+                    "db_referencing_fk":"book_id",
+                    "rst_referenced_backref":"revisao"}
+                 ]
+ }
 ]
