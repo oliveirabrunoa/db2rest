@@ -147,5 +147,57 @@
                     "db_referencing_fk":"user_id",
                     "rst_referenced_backref": "endereco"}
                 ]
-}
+},
+{
+    "__rst_model_name__": "EntryModel",
+    "__db_table_name__": "entry",
+    "attributes": [{
+                      "rst_attribute_name": "id_entry",
+                      "db_column_table":"id",
+                      "db_primary_key": "True"
+                    },
+                    {
+                      "rst_attribute_name":  "titulo",
+                      "db_column_table":"title"
+                    },
+                    {
+                      "rst_attribute_name":  "conteudo",
+                      "db_column_table":"content_entry"
+                    }]
+  },
+  {
+    "__rst_model_name__": "TagModel",
+    "__db_table_name__": "tag",
+    "attributes": [{
+                      "rst_attribute_name": "id_tag",
+                      "db_column_table":"id",
+                      "db_primary_key": "True"
+                    },
+                    {
+                      "rst_attribute_name":  "nome",
+                      "db_column_table":"name"
+                    }]
+  },
+  {
+    "__rst_model_name__": "EntryTag",
+    "__db_table_name__": "entrytag",
+    "attributes": [{
+                      "rst_attribute_name": "id_entrytag",
+                      "db_column_table":"id",
+                      "db_primary_key": "True"
+                    }],
+
+    "relationships": [{
+                  "type":"M2M",
+                  "rst_referenced_model_left":"EntryModel",
+                  "rst_referenced_model_right":"TagModel",
+                  "db_referenced_table_left_pk": "entry.id",
+                  "db_referenced_table_right_pk": "tag.id",
+                  "rst_referencing_name_left": "entry",
+                  "rst_referencing_name_right": "tag",
+                  "rst_referenced_backref_left":"tags",
+                  "rst_referenced_backref_right":"entries"   
+                  }
+                  ]
+  }
 ]

@@ -202,43 +202,43 @@ class LoadModelClasses(object):
                 if relation.get('type') == 'M2M':
                     relation_M2M = [
                              {
-                              'relation_atribute_name': '{0}_id'.format(relation.get('db_association_fk_a').split('.')[0]),
+                              'relation_atribute_name': '{0}_id'.format(relation.get('db_referenced_table_left_pk').split('.')[0]),
                               'atribute_field': 'Column','atribute_field_type': 'Integer', 'atribute_pk':True,
-                              'atribute_field_fk': "'{0}'".format(relation.get('db_association_fk_a'))
+                              'atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_left_pk'))
                              },
                              {
-                             'relation_atribute_name': relation.get('rst_association_atribute_a'),'atribute_field': 'relationship',
-                             'atribute_field_name': "'{0}'".format(relation.get('rst_association_a')),
-                             'atribute_field_back_populates': "'{0}'".format(relation.get('rst_back_populates_a'))
+                             'relation_atribute_name': relation.get('rst_referencing_name_left'),'atribute_field': 'relationship',
+                             'atribute_field_name': "'{0}'".format(relation.get('rst_referenced_model_left')),
+                             'atribute_field_back_populates': "'{0}'".format(relation.get('rst_referenced_backref_left'))
                              },
                              {
-                             'relation_atribute_name': '{0}_id'.format(relation.get('db_association_fk_b').split('.')[0]),
+                             'relation_atribute_name': '{0}_id'.format(relation.get('db_referenced_table_right_pk').split('.')[0]),
                              'atribute_field': 'Column','atribute_field_type': 'Integer','atribute_pk':True,
-                             'atribute_field_fk': "'{0}'".format(relation.get('db_association_fk_b'))
+                             'atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_right_pk'))
                              },
                              {
-                             'relation_atribute_name': relation.get('rst_association_atribute_b'),'atribute_field': 'relationship',
-                             'atribute_field_name': "'{0}'".format(relation.get('rst_association_b')),
-                             'atribute_field_back_populates': "'{0}'".format(relation.get('rst_back_populates_b'))
+                             'relation_atribute_name': relation.get('rst_referencing_name_right'),'atribute_field': 'relationship',
+                             'atribute_field_name': "'{0}'".format(relation.get('rst_referenced_model_right')),
+                             'atribute_field_back_populates': "'{0}'".format(relation.get('rst_referenced_backref_right'))
                              }]
                     self.relationship_atributes_attrs(model,relation_M2M)
 
                     relation_M2M_target_A = [
                                {
-                               'relation_atribute_name': relation.get('rst_back_populates_a'),'atribute_field': 'relationship',
+                               'relation_atribute_name': relation.get('rst_referenced_backref_left'),'atribute_field': 'relationship',
                                'atribute_field_name': "'{0}'".format(model.__rst_model_name__),
-                               'atribute_field_back_populates': "'{0}'".format(relation.get('rst_association_atribute_a'))
+                               'atribute_field_back_populates': "'{0}'".format(relation.get('rst_referencing_name_left'))
                                }]
-                    target_a = self.get_model_by_name(list_models,relation.get('rst_association_a'))
+                    target_a = self.get_model_by_name(list_models,relation.get('rst_referenced_model_left'))
                     self.relationship_atributes_attrs(target_a,relation_M2M_target_A)
 
                     relation_M2M_target_B = [
                                {
-                               'relation_atribute_name': relation.get('rst_back_populates_b'),'atribute_field': 'relationship',
+                               'relation_atribute_name': relation.get('rst_referenced_backref_right'),'atribute_field': 'relationship',
                                'atribute_field_name': "'{0}'".format(model.__rst_model_name__),
-                               'atribute_field_back_populates': "'{0}'".format(relation.get('rst_association_atribute_b'))
+                               'atribute_field_back_populates': "'{0}'".format(relation.get('rst_referencing_name_right'))
                                }]
-                    target_b = self.get_model_by_name(list_models,relation.get('rst_association_b'))
+                    target_b = self.get_model_by_name(list_models,relation.get('rst_referenced_model_right'))
                     self.relationship_atributes_attrs(target_b,relation_M2M_target_B)
 
         render_to_template("DB2Rest/models.py", "model_template.py",list_models)

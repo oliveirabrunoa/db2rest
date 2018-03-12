@@ -115,3 +115,58 @@ class Endereco(Base):
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
             setattr(self, k, v)
+
+
+
+class EntryModel(Base):
+    __tablename__ = "entry"
+
+    id_entry = Column('id',Integer,primary_key=True)
+    titulo = Column('title')
+    conteudo = Column('content_entry')
+
+    ##Relationships##
+    tags = relationship('EntryTag',back_populates='entry')
+
+
+
+    def __init__(self, **kwargs):
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+
+
+class TagModel(Base):
+    __tablename__ = "tag"
+
+    id_tag = Column('id',Integer,primary_key=True)
+    nome = Column('name')
+
+    ##Relationships##
+    entries = relationship('EntryTag',back_populates='tag')
+
+
+
+    def __init__(self, **kwargs):
+        for k, v in kwargs.items():
+            setattr(self, k, v)
+
+
+
+class EntryTag(Base):
+    __tablename__ = "entrytag"
+
+    id_entrytag = Column('id',Integer,primary_key=True)
+
+    ##Relationships##
+    entry_id = Column(Integer,ForeignKey('entry.id'),primary_key=True)
+    entry = relationship('EntryModel',back_populates='tags')
+
+    tag_id = Column(Integer,ForeignKey('tag.id'),primary_key=True)
+    tag = relationship('TagModel',back_populates='entries')
+
+
+
+    def __init__(self, **kwargs):
+        for k, v in kwargs.items():
+            setattr(self, k, v)
