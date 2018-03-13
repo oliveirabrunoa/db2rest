@@ -154,7 +154,7 @@ class LoadModelClasses(object):
                 if relation.get('type') == 'O2M':
                     relation_O2M = [
                              {
-                             'relation_atribute_name': '{0}_id'.format(relation.get('rst_referenced_model').lower()),
+                             'relation_atribute_name': '{0}_id'.format(relation.get('rst_referencing_name')),
                              'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_referencing_fk')),
                              'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_pk'))
                              },
