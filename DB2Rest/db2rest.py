@@ -131,7 +131,7 @@ class LoadModelClasses(object):
                     relation_M2O = [
                             {
                              'relation_atribute_name': '{0}_id'.format(relation.get('rst_referencing_name')),
-                             'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_referenced_table')),
+                             'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_referencing_table_pk')),
                              'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_fk'))
                              },
                              {

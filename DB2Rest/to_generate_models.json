@@ -28,6 +28,7 @@
                           "rst_referencing_name": "categoria",
                           "rst_referenced_model": "Categoria",
                           "db_referenced_table":"category",
+                          "db_referencing_table_pk": "category",
                           "db_referenced_table_fk": "category.id",
                           "rst_referenced_backref": "postagens"}]
   },
@@ -196,7 +197,7 @@
                   "rst_referencing_name_left": "entry",
                   "rst_referencing_name_right": "tag",
                   "rst_referenced_backref_left":"tags",
-                  "rst_referenced_backref_right":"entries"   
+                  "rst_referenced_backref_right":"entries"
                   }
                   ]
   }
