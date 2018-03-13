@@ -185,7 +185,7 @@ class LoadModelClasses(object):
                              },
                              {
                              'relation_atribute_name': relation.get('rst_referencing_name'),'atribute_field': 'relationship',
-                             'atribute_field_name': "'{0}'".format(relation.get('rst_referencing_name').capitalize()),
+                             'atribute_field_name': "'{0}'".format(relation.get('rst_referenced_model')),
                              'atribute_field_back_populates': "'{0}'".format(relation.get('rst_referenced_backref'))
                              }]
                     self.relationship_atributes_attrs(model,relation_O2O)
