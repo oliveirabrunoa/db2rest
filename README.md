@@ -230,19 +230,41 @@ Attributes used on realitons: Many-to-One (M2O), One-to-Many(O2M) e One-to-One(O
                     "db_primary_key": "True"
                   }],
   "relationships": [{ 
-                  "type":"M2M", #M2M means Many-to-Many relationship
-                  "rst_association_a":"EntryModel", # Model of the web service that represent left side
-                  "rst_association_b":"TagModel", #Model of the web service that represent right side
-                  "db_association_fk_a": "entry.id", # The attribute foreign key references on the database, left
-                  "db_association_fk_b": "tag.id", # The attribute foreign key references on the database, right
-                  "rst_association_atribute_a": "entry", #atribute that represents the relation on left side
-                  "rst_association_atribute_b": "tag", #atribute that represents the relation on left side
-                  "rst_back_populates_a":"tags", # Name of field that represente the "back_populates", alow acess across other side of relationship, across left
-                  "rst_back_populates_b":"entries" # Name of field that represente the "back_populates", alow acess across other side of relationship, across right
+                  "type":"M2M",
+                  "rst_referenced_model_left":"EntryModel",
+                  "rst_referenced_model_right":"TagModel",
+                  "db_referenced_table_left_pk": "entry.id",
+                  "db_referenced_table_right_pk": "tag.id",
+                  "rst_referencing_name_left": "entry",
+                  "rst_referencing_name_right": "tag",
+                  "rst_referenced_backref_left":"tags",
+                  "rst_referenced_backref_right":"entries"
                 }
                 ]
 }
 ```
+
+
+**"relationships"** JSON list with relationships from this model
+
+**"type"** #M2M means Many-to-Many relationship
+
+**"rst_referenced_model_left"** #The model referenced on the left of relationship
+
+**"rst_referenced_model_right** #The model referenced on the right of relationship
+
+**"db_referenced_table_left_pk"** #The model referenced on the left of relationship
+
+**"db_referenced_table_right_pk"** #The model referenced on the right of relationship
+
+**"rst_referencing_name_left"** #The attribute primary key on referenced table left
+
+**"rst_referencing_name_right"** #The attribute primary key on referenced table left
+
+**"rst_referenced_backref_left"** The attribute that allow to acess the list of right side on left side 
+
+**"rst_referenced_backref_right"** The attribute that allow to acess the list of left side on right side
+
 
 ### Running
 
