@@ -52,7 +52,7 @@ export DATABASE_URL="postgresql://<<<usuario>>>:<<<senha>>>@localhost/<<<DATABA
 
 Enter the values in the configuration json, according to the instructions below. 
 
-#Configuring Models:
+##Configuring Models:
 
 The fields preceding "rst" area to identify the models on web service and "db" represent the Legacy Database fields.
 ```json
@@ -65,7 +65,7 @@ The fields preceding "rst" area to identify the models on web service and "db" r
 
 **"__db_table_name__"** The table on the Legacy Database
 
-#Configuring Attributes:
+## Configuring Attributes:
 
 Following our first example, learn how to configure the attributes that are mapped.
 ```json
@@ -103,7 +103,7 @@ Following our first example, learn how to configure the attributes that are mapp
 
 
 
-##Configure Relationships:
+## Configure Relationships:
 
 This tool is based on SQLALChemy Framework. The Framework define one especific way to map relationships, and is our job generate the code expected to Framework. For do that, some fields are required acording of each type of relationship.
 
@@ -111,7 +111,7 @@ Pay close attention to each attribute and what it serves, as this will have a di
 
 Following our first example... just enter one more key "relationships" in json.
 
-#Many-to-One (M2O)
+###### #Many-to-One (M2O)
 
 ```
 {
@@ -128,17 +128,36 @@ Following our first example... just enter one more key "relationships" in json.
                   }],
   
   "relationships": [{
-                  "type":"M2O", #M2O means Many-to-One relationship
-                  "rst_model_name": "categoria", #The name of the field used on web service to get the relation (example: postagem.categoria)
-                  "rst_model_target": "UserType", # Model of the web service with which it relates
-                  "db_table_name":"category", #db_table_name is The table on the database with which this model relates.
-                  "db_foreign_key": "category.id", # db_foreign_key is The attribute foreign key references on the database 
-                  "rst_backref": "postagens"} # rst_backref is The attribute that allow to acess this model by other side of relatinship (example: categoria.postagens)
+                    "type":"M2O",
+                    "rst_referencing_name": "categoria",
+                    "rst_referenced_model": "Categoria",
+                    "db_referenced_table":"category",
+                    "db_referencing_table_pk": "category",
+                    "db_referenced_table_fk": "category.id",
+                    "rst_referenced_backref": "postagens"}
                 ]
 }
 ```
+**"relationships"** JSON list with relationships from this model
 
-#One-to-Many (O2M)
+**"type"** #M2O means Many-to-One relationship
+
+**"rst_referencing_name"** The name of the field used on web service to get the relation (example: postagem.categoria)
+
+**"rst_referenced_model** Model of the web service with which it relates
+
+**"db_referenced_table"** The table on the database represented by the model relates.
+
+**"db_referencing_table_pk"** The attribute primary key on referenced table 
+
+**"db_referenced_table_fk"** The attribute that used as foreign key on this model
+
+**"rst_referenced_backref"** The attribute that allow to acess this model by other side of relatinship (example: categoria.postagens)
+                ]
+
+
+
+###### #One-to-Many (O2M)
 
 ```
 {
@@ -168,7 +187,7 @@ Following our first example... just enter one more key "relationships" in json.
 
 ```
 
-#One-to-One(O2O)
+###### #One-to-One(O2O)
 
 ```
 {
@@ -198,7 +217,7 @@ Following our first example... just enter one more key "relationships" in json.
 }
 ```
 
-#Many-to-Many (M2M)
+###### #Many-to-Many (M2M)
 
 ```
 {
@@ -229,7 +248,12 @@ Following our first example... just enter one more key "relationships" in json.
 Execute script to generate models
 
 ```
-python execute_map2rest.py
+python execute_db2rest.py
+```
+
+Import the model.py on the services
+```
+from DB2Rest import models
 ```
 
 Run the main python module
