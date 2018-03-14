@@ -177,13 +177,13 @@ Attributes used on realitons: Many-to-One (M2O), One-to-Many(O2M) e One-to-One(O
                   
                   ],
   "relationships": [{
-                  "type":"O2M", 
-                  "rst_model_name": "revisao", 
-                  "rst_model_target": "Livro", 
-                  "db_table_name":"books", 
-                  "db_foreign_key": "books.id", 
-                  "db_column_fk":"book_id", 
-                  "rst_back_populates":"endereco"} 
+                    "type":"O2M",
+                    "rst_referencing_name": "livro",
+                    "rst_referenced_model": "Livro",
+                    "db_referenced_table":"books",
+                    "db_referencing_table_pk": "books.id",
+                    "db_referenced_table_fk":"book_id",
+                    "rst_referenced_backref":"revisao"} 
                 ]
 }
 
@@ -207,14 +207,13 @@ Attributes used on realitons: Many-to-One (M2O), One-to-Many(O2M) e One-to-One(O
                 
                 ],
 "relationships": [{
-                "type":"O2O", 
-                "rst_model_name": "usuario", 
-                "rst_model_target": "Usuario", 
-                "rst_model_target_name":"endereco", 
-                "db_table_name":"users",
-                "db_foreign_key": "users.id",
-                "db_column_fk":"user_id",
-                "rst_back_populates": "endereco"} 
+                  "type":"O2O",
+                  "rst_referencing_name": "usuario",
+                  "rst_referenced_model": "Usuario",
+                  "db_referenced_table":"users",
+                  "db_referencing_table_pk": "users.id",
+                  "db_referenced_table_fk":"user_id",
+                  "rst_referenced_backref": "endereco"} 
               ]
 }
 ```
