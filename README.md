@@ -55,32 +55,54 @@ Enter the values in the configuration json, according to the instructions below.
 #Configuring Models:
 
 The fields preceding "rst" area to identify the models on web service and "db" represent the Legacy Database fields.
-```
+```json
 {
-  "__rst_model_name__": "Postagem", #The name of the Model on Web Service
-  "__db_table_name__": "post", #The table on the Legacy Database
+  "__rst_model_name__": "Postagem", 
+  "__db_table_name__": "post" 
 }
 ```
+**"__rst_model_name__"** The name of the Model on Web Service
+
+**"__db_table_name__"** The table on the Legacy Database
 
 #Configuring Attributes:
 
 Following our first example, learn how to configure the attributes that are mapped.
-```
+```json
 {
-  "__rst_model_name__": "Postagem", #The name of the Model on Web Service
-  "__db_table_name__": "post", #The table on the Legacy Database
-  "attributes": [{ # JSON list of all attributes expected
-                      "rst_attribute_name": "id_postagem", #Attribute expected by Web Service
-                      "db_column_table":"id", #Column of the database that will be represented on Web Service
-                      "db_primary_key": "True" #Especial field that indicates that field is a primary key.
+  "__rst_model_name__": "Postagem", 
+  "__db_table_name__": "post", 
+  "attributes": [{ 
+                      "rst_attribute_name": "id_postagem", 
+                      "db_column_table":"id", 
+                      "db_primary_key": "True" 
                     },
                     {
-                      "rst_attribute_name":  "titulo", #Attribute expected by Web Service
-                      "db_column_table":"title" #Column of the database that will be represented on Web Service
+                      "rst_attribute_name":  "titulo", 
+                      "db_column_table":"title" 
                      }
                   ]
 }
 ```
+
+**"__rst_model_name__"** The name of the Model on Web Service
+
+**"__db_table_name__"** The table on the Legacy Database
+
+**"attributes"** JSON list of all attributes expected
+
+**"rst_attribute_name"** Attribute expected by Web Service
+
+**"db_column_table"** Column of the database that will be represented on Web Service
+
+**"db_primary_key"** Especial field that indicates that field is a primary key.
+
+**"rst_attribute_name"** Attribute expected by Web Service
+
+**"db_column_table"** Column of the database that will be represented on Web Service
+
+
+
 ##Configure Relationships:
 
 This tool is based on SQLALChemy Framework. The Framework define one especific way to map relationships, and is our job generate the code expected to Framework. For do that, some fields are required acording of each type of relationship.
