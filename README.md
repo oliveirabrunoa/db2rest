@@ -111,9 +111,29 @@ Pay close attention to each attribute and what it serves, as this will have a di
 
 Following our first example... just enter one more key "relationships" in json.
 
+Attributes used on realitons: Many-to-One (M2O), One-to-Many(O2M) e One-to-One(O2O)
+
+**"relationships"** JSON list with relationships from this model
+
+**"type"** #M2O means Many-to-One relationship
+
+**"rst_referencing_name"** The name of the field used on web service to get the relation (example: postagem.categoria)
+
+**"rst_referenced_model** Model of the web service with which it relates
+
+**"db_referenced_table"** The table on the database represented by the model relates.
+
+**"db_referencing_table_pk"** The attribute primary key on referenced table 
+
+**"db_referenced_table_fk"** The attribute that used as foreign key on this model
+
+**"rst_referenced_backref"** The attribute that allow to acess this model by other side of relatinship (example: categoria.postagens)
+
+
+
 ###### #Many-to-One (M2O)
 
-```
+```json
 {
   "__rst_model_name__": "Postagem",
   "__db_table_name__": "post",
@@ -138,28 +158,10 @@ Following our first example... just enter one more key "relationships" in json.
                 ]
 }
 ```
-**"relationships"** JSON list with relationships from this model
-
-**"type"** #M2O means Many-to-One relationship
-
-**"rst_referencing_name"** The name of the field used on web service to get the relation (example: postagem.categoria)
-
-**"rst_referenced_model** Model of the web service with which it relates
-
-**"db_referenced_table"** The table on the database represented by the model relates.
-
-**"db_referencing_table_pk"** The attribute primary key on referenced table 
-
-**"db_referenced_table_fk"** The attribute that used as foreign key on this model
-
-**"rst_referenced_backref"** The attribute that allow to acess this model by other side of relatinship (example: categoria.postagens)
-                ]
-
-
 
 ###### #One-to-Many (O2M)
 
-```
+```json
 {
   "__rst_model_name__": "Revisao",
   "__db_table_name__": "reviews",
@@ -172,16 +174,16 @@ Following our first example... just enter one more key "relationships" in json.
                     "rst_attribute_name":  "revisor_name",
                     "db_column_table":"reviewer_name"
                   }
-                  .... more fields
+                  
                   ],
   "relationships": [{
-                  "type":"O2M", #O2M means One-to-many relationship
-                  "rst_model_name": "revisao", #This attribute is the name of the field that will be include in the other side of the relationship.
-                  "rst_model_target": "Livro", # Model of the web service with which it relates
-                  "db_table_name":"books", #db_table_name is The table on the database with which this model relates.
-                  "db_foreign_key": "books.id", # db_foreign_key is The attribute foreign key references on the database 
-                  "db_column_fk":"book_id", #Name of field that represente the relationship on this model.
-                  "rst_back_populates":"endereco"} # Name of field that represente the "back_populates", alow acess across other side of relationship. 
+                  "type":"O2M", 
+                  "rst_model_name": "revisao", 
+                  "rst_model_target": "Livro", 
+                  "db_table_name":"books", 
+                  "db_foreign_key": "books.id", 
+                  "db_column_fk":"book_id", 
+                  "rst_back_populates":"endereco"} 
                 ]
 }
 
@@ -189,7 +191,7 @@ Following our first example... just enter one more key "relationships" in json.
 
 ###### #One-to-One(O2O)
 
-```
+```json
 {
 "__rst_model_name__": "Endereco",
 "__db_table_name__": "addresses",
@@ -202,17 +204,17 @@ Following our first example... just enter one more key "relationships" in json.
                   "rst_attribute_name":  "rua",
                   "db_column_table":"street"
                 }
-                ....more fields
+                
                 ],
 "relationships": [{
-                "type":"O2O", #O2O means One-to-One relationship
+                "type":"O2O", 
                 "rst_model_name": "usuario", 
-                "rst_model_target": "Usuario", # Model of the web service with which it relates
-                "rst_model_target_name":"endereco", # Attribute that will be included on model target
+                "rst_model_target": "Usuario", 
+                "rst_model_target_name":"endereco", 
                 "db_table_name":"users",
                 "db_foreign_key": "users.id",
                 "db_column_fk":"user_id",
-                "rst_back_populates": "endereco"} # Name of field that represente the "back_populates", alow acess across other side of relationship. 
+                "rst_back_populates": "endereco"} 
               ]
 }
 ```
@@ -228,7 +230,7 @@ Following our first example... just enter one more key "relationships" in json.
                     "db_column_table":"id",
                     "db_primary_key": "True"
                   }],
-  "relationships": [{ #Here, the letters A and B will be used to represente the right and left sids of relationship.
+  "relationships": [{ 
                   "type":"M2M", #M2M means Many-to-Many relationship
                   "rst_association_a":"EntryModel", # Model of the web service that represent left side
                   "rst_association_b":"TagModel", #Model of the web service that represent right side
