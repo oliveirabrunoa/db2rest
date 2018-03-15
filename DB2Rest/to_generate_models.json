@@ -20,17 +20,17 @@
                       "db_column_table":"time"
                     }],
     "derived_attribute":[{
-                          "rst_property_name": "datalhes_publicacao",
-                          "db_columns": "date|time"
+                      "rst_property_name": "datalhes_publicacao",
+                      "db_columns": "date|time"
                         }],
     "relationships": [{
-                          "type":"M2O",
-                          "rst_referencing_name": "categoria",
-                          "rst_referenced_model": "Categoria",
-                          "db_referenced_table":"category",
-                          "db_referencing_table_pk": "category",
-                          "db_referenced_table_fk": "category.id",
-                          "rst_referenced_backref": "postagens"}]
+                      "type":"M2O",
+                      "rst_referencing_name": "categoria",
+                      "rst_referenced_model": "Categoria",
+                      "db_referenced_table":"category",
+                      "db_referenced_table_pk": "category.id",
+                      "db_referencing_table_fk": "category",
+                      "rst_referenced_backref": "postagens"}]
   },
   {
     "__rst_model_name__": "Categoria",
@@ -100,8 +100,8 @@
                     "rst_referencing_name": "livro",
                     "rst_referenced_model": "Livro",
                     "db_referenced_table":"books",
-                    "db_referencing_table_pk": "books.id",
-                    "db_referenced_table_fk":"book_id",
+                    "db_referenced_table_pk": "books.id",
+                    "db_referencing_table_fk":"book_id",
                     "rst_referenced_backref":"revisao"}
                  ]
  },
@@ -144,8 +144,8 @@
                     "rst_referencing_name": "usuario",
                     "rst_referenced_model": "Usuario",
                     "db_referenced_table":"users",
-                    "db_referencing_table_pk": "users.id",
-                    "db_referenced_table_fk":"user_id",
+                    "db_referenced_table_pk": "users.id",
+                    "db_referencing_table_fk":"user_id",
                     "rst_referenced_backref": "endereco"}
                 ]
 },
@@ -201,4 +201,5 @@
                   }
                   ]
   }
+
 ]

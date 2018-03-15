@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from DB2Rest.db2rest import LoadModelClasses
 
 if __name__ == '__main__':

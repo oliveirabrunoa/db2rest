@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from DB2Rest.db import Base, db_session, engine, meta
 from DB2Rest.render_template import render_to_template
 import json, pdb, os, importlib
@@ -131,8 +132,8 @@ class LoadModelClasses(object):
                     relation_M2O = [
                             {
                              'relation_atribute_name': '{0}_id'.format(relation.get('rst_referencing_name')),
-                             'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_referencing_table_pk')),
-                             'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_fk'))
+                             'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_referencing_table_fk')),
+                             'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_pk'))
                              },
                              {
                              'relation_atribute_name': relation.get('rst_referencing_name'),'atribute_field': 'relationship',
@@ -155,7 +156,7 @@ class LoadModelClasses(object):
                     relation_O2M = [
                              {
                              'relation_atribute_name': '{0}_id'.format(relation.get('rst_referencing_name')),
-                             'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_referencing_fk')),
+                             'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_referencing_table_fk')),
                              'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_pk'))
                              },
                              {
@@ -180,7 +181,7 @@ class LoadModelClasses(object):
                     relation_O2O = [
                              {
                               'relation_atribute_name': '{0}_id'.format(relation.get('rst_referencing_name')),
-                              'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_referencing_fk')),
+                              'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_referencing_table_fk')),
                               'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_pk'))
                              },
                              {
@@ -257,7 +258,6 @@ class LoadModelClasses(object):
        for model in list_models:
            relations.append(self.check_relationships(model))
        self.generate_relationships(list_models)
-       [print(r) for r in relations if r]
        print('Arquivo models.py gerado com sucesso! Realize o import deste arquivo para uso dos serviços!')
 
 class ModelHelper(object):
