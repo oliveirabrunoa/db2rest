@@ -89,25 +89,23 @@ class LoadModelClasses(object):
 
     def check_relationships(self, model):
 
-        if not model.get_relationships():
-            return False
-
-        result_list = []
+        result_list=[]
         for relationship in model.get_relationships():
-            table_db_foreign_key = relationship.get('db_foreign_key')#Obtém o nome da tabela com o qual tem relacionamento
-            if table_db_foreign_key:
-                table_name = table_db_foreign_key.split('.')[0]
+            table_name = relationship.get('db_referenced_table')#Obtém o nome da tabela com o qual tem relacionamento
+            if table_name:
                 if not relationship.get('type') == "M2M":
                     if not self.check_table_exist(table_name): #verifica se a tabela de fato existe na base
-                        result_list.append({'status': 'A tabela {0} não existe na Base de Dados. Verifique os relacionamentos para o modelo no JSON de configuração e tente novamente.'
-                                       .format(table_name)})
-                        return False
-
-                    mapper_table = inspect(self.get_table(table_name))
-                    for pk in mapper_table.primary_key:
-                        if not str(pk.name) == (relationship.get('db_foreign_key').split(".")[1]):
-                            result_list.append({'relationships': 'Relacionamento entre {0} e {1} através da foreign_key {2} NÃO encontrado!'
-                                           .format(model.__db_table_name__,relationship.get('db_referenced_table'),relationship.get('db_foreign_key'))})
+                        result_list.append({ "status":3,"model": '{0}: A tabela {1} não existe na Base de Dados. Verifique os relacionamentos para o modelo no JSON de configuração e tente novamente.'
+                                       .format(model.__rst_model_name__,table_name)})
+                    else:
+                        mapper_table = inspect(self.get_table(table_name))
+                        for pk in mapper_table.primary_key:
+                            if not str(pk.name) == relationship.get('db_referenced_table_pk').split(".")[1]:
+                                result_list.append({"status":1, "model": '{0}: Relacionamento entre {1} e {2} através da foreign_key {3} NÃO encontrado!'
+                                               .format(model.__rst_model_name__,model.__db_table_name__,relationship.get('db_referenced_table'),relationship.get('db_referenced_table_pk'))})
+                            else:
+                                result_list.append({"status":2,"model": '{0}: Relacionamento entre {1} e {2} detectado!'
+                                               .format(model.__rst_model_name__,model.__db_table_name__,relationship.get('db_referenced_table'))})
 
             return result_list
 
@@ -121,128 +119,131 @@ class LoadModelClasses(object):
             return model
 
     def generate_relationships(self,list_models):
-        print('Verificando relacionamentos....')
+        print('\nVerificando relacionamentos....\n')
+
+        results=[]
         for model in list_models:
-            if not model.get_relationships():
-                #print('O modelo {0} não possui relacionamentos definidos no arquivo de configuração.'.format(model.__rst_model_name__))
-                continue
+            if model.get_relationships():
+                results.append(self.check_relationships(model))
 
-            for relation in model.get_relationships():
-                if relation.get('type') == 'M2O':
-                    relation_M2O = [
-                            {
-                             'relation_atribute_name': '{0}_id'.format(relation.get('rst_referencing_name')),
-                             'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_referencing_table_fk')),
-                             'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_pk'))
-                             },
-                             {
-                             'relation_atribute_name': relation.get('rst_referencing_name'),'atribute_field': 'relationship',
-                             'atribute_field_name': "'{0}'".format(relation.get('rst_referenced_model')),
-                             'atribute_field_backref': "'{0}'".format(relation.get('rst_referenced_backref')),
-                             'atribute_field_lazy':"'joined'"
-                             }]
-                    self.relationship_atributes_attrs(model,relation_M2O)
+            if model.get_relationships():
+                for relation in model.get_relationships():
+                    if relation.get('type') == 'M2O':
+                        relation_M2O = [
+                                {
+                                 'relation_atribute_name': '{0}_id'.format(relation.get('rst_referencing_name')),
+                                 'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_referencing_table_fk')),
+                                 'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_pk'))
+                                 },
+                                 {
+                                 'relation_atribute_name': relation.get('rst_referencing_name'),'atribute_field': 'relationship',
+                                 'atribute_field_name': "'{0}'".format(relation.get('rst_referenced_model')),
+                                 'atribute_field_backref': "'{0}'".format(relation.get('rst_referenced_backref')),
+                                 'atribute_field_lazy':"'joined'"
+                                 }]
+                        self.relationship_atributes_attrs(model,relation_M2O)
 
-                    relation_M2O_target = [
-                               {
-                               'relation_atribute_name': relation.get('rst_referenced_backref'),'atribute_field': 'relationship',
-                               'atribute_field_name': "'{0}'".format(model.__rst_model_name__),
-                               'atribute_field_backref':"'{0}'".format(relation.get('rst_referencing_name'))
-                               }]
-                    target = self.get_model_by_name(list_models,relation.get('rst_referenced_model'))
-                    self.relationship_atributes_attrs(target,relation_M2O_target)
+                        relation_M2O_target = [
+                                   {
+                                   'relation_atribute_name': relation.get('rst_referenced_backref'),'atribute_field': 'relationship',
+                                   'atribute_field_name': "'{0}'".format(model.__rst_model_name__),
+                                   'atribute_field_backref':"'{0}'".format(relation.get('rst_referencing_name'))
+                                   }]
+                        target = self.get_model_by_name(list_models,relation.get('rst_referenced_model'))
+                        self.relationship_atributes_attrs(target,relation_M2O_target)
 
-                if relation.get('type') == 'O2M':
-                    relation_O2M = [
-                             {
-                             'relation_atribute_name': '{0}_id'.format(relation.get('rst_referencing_name')),
-                             'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_referencing_table_fk')),
-                             'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_pk'))
-                             },
-                             {
-                             'relation_atribute_name': relation.get('rst_referencing_name'),'atribute_field': 'relationship',
-                             'atribute_field_name': "'{0}'".format(relation.get('rst_referenced_model')),
-                             'atribute_field_backref': "'{0}'".format(relation.get('rst_referenced_backref')),
-                             'atribute_field_lazy':"'joined'"
-                             }]
+                    if relation.get('type') == 'O2M':
+                        relation_O2M = [
+                                 {
+                                 'relation_atribute_name': '{0}_id'.format(relation.get('rst_referencing_name')),
+                                 'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_referencing_table_fk')),
+                                 'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_pk'))
+                                 },
+                                 {
+                                 'relation_atribute_name': relation.get('rst_referencing_name'),'atribute_field': 'relationship',
+                                 'atribute_field_name': "'{0}'".format(relation.get('rst_referenced_model')),
+                                 'atribute_field_backref': "'{0}'".format(relation.get('rst_referenced_backref')),
+                                 'atribute_field_lazy':"'joined'"
+                                 }]
 
-                    self.relationship_atributes_attrs(model,relation_O2M)
+                        self.relationship_atributes_attrs(model,relation_O2M)
 
-                    relation_O2M_target = [
-                              {
-                              'relation_atribute_name': relation.get('rst_referenced_backref'),'atribute_field': 'relationship',
-                              'atribute_field_name': "'{0}'".format(model.__rst_model_name__),
-                              'atribute_field_backref':"'{0}'".format(relation.get('rst_referencing_name'))
-                              }]
-                    target = self.get_model_by_name(list_models,relation.get('rst_referenced_model'))
-                    self.relationship_atributes_attrs(target,relation_O2M_target)
+                        relation_O2M_target = [
+                                  {
+                                  'relation_atribute_name': relation.get('rst_referenced_backref'),'atribute_field': 'relationship',
+                                  'atribute_field_name': "'{0}'".format(model.__rst_model_name__),
+                                  'atribute_field_backref':"'{0}'".format(relation.get('rst_referencing_name'))
+                                  }]
+                        target = self.get_model_by_name(list_models,relation.get('rst_referenced_model'))
+                        self.relationship_atributes_attrs(target,relation_O2M_target)
 
-                if relation.get('type') == 'O2O':
-                    relation_O2O = [
-                             {
-                              'relation_atribute_name': '{0}_id'.format(relation.get('rst_referencing_name')),
-                              'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_referencing_table_fk')),
-                              'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_pk'))
-                             },
-                             {
-                             'relation_atribute_name': relation.get('rst_referencing_name'),'atribute_field': 'relationship',
-                             'atribute_field_name': "'{0}'".format(relation.get('rst_referenced_model')),
-                             'atribute_field_back_populates': "'{0}'".format(relation.get('rst_referenced_backref'))
-                             }]
-                    self.relationship_atributes_attrs(model,relation_O2O)
+                    if relation.get('type') == 'O2O':
+                        relation_O2O = [
+                                 {
+                                  'relation_atribute_name': '{0}_id'.format(relation.get('rst_referencing_name')),
+                                  'atribute_field': 'Column','atribute_field_name': "'{0}'".format(relation.get('db_referencing_table_fk')),
+                                  'atribute_field_type': 'Integer','atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_pk'))
+                                 },
+                                 {
+                                 'relation_atribute_name': relation.get('rst_referencing_name'),'atribute_field': 'relationship',
+                                 'atribute_field_name': "'{0}'".format(relation.get('rst_referenced_model')),
+                                 'atribute_field_back_populates': "'{0}'".format(relation.get('rst_referenced_backref'))
+                                 }]
+                        self.relationship_atributes_attrs(model,relation_O2O)
 
-                    relation_O2O_target = [
-                               {
-                               'relation_atribute_name': relation.get('rst_referenced_backref'),'atribute_field': 'relationship',
-                               'atribute_field_name': "'{0}'".format(model.__rst_model_name__),
-                               'atribute_uselist': False, 'atribute_field_back_populates': "'{0}'".format(relation.get('rst_referencing_name'))
-                               }]
-                    target = self.get_model_by_name(list_models,relation.get('rst_referenced_model'))
-                    self.relationship_atributes_attrs(target,relation_O2O_target)
+                        relation_O2O_target = [
+                                   {
+                                   'relation_atribute_name': relation.get('rst_referenced_backref'),'atribute_field': 'relationship',
+                                   'atribute_field_name': "'{0}'".format(model.__rst_model_name__),
+                                   'atribute_uselist': False, 'atribute_field_back_populates': "'{0}'".format(relation.get('rst_referencing_name'))
+                                   }]
+                        target = self.get_model_by_name(list_models,relation.get('rst_referenced_model'))
+                        self.relationship_atributes_attrs(target,relation_O2O_target)
 
-                if relation.get('type') == 'M2M':
-                    relation_M2M = [
-                             {
-                              'relation_atribute_name': '{0}_id'.format(relation.get('db_referenced_table_left_pk').split('.')[0]),
-                              'atribute_field': 'Column','atribute_field_type': 'Integer', 'atribute_pk':True,
-                              'atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_left_pk'))
-                             },
-                             {
-                             'relation_atribute_name': relation.get('rst_referencing_name_left'),'atribute_field': 'relationship',
-                             'atribute_field_name': "'{0}'".format(relation.get('rst_referenced_model_left')),
-                             'atribute_field_back_populates': "'{0}'".format(relation.get('rst_referenced_backref_left'))
-                             },
-                             {
-                             'relation_atribute_name': '{0}_id'.format(relation.get('db_referenced_table_right_pk').split('.')[0]),
-                             'atribute_field': 'Column','atribute_field_type': 'Integer','atribute_pk':True,
-                             'atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_right_pk'))
-                             },
-                             {
-                             'relation_atribute_name': relation.get('rst_referencing_name_right'),'atribute_field': 'relationship',
-                             'atribute_field_name': "'{0}'".format(relation.get('rst_referenced_model_right')),
-                             'atribute_field_back_populates': "'{0}'".format(relation.get('rst_referenced_backref_right'))
-                             }]
-                    self.relationship_atributes_attrs(model,relation_M2M)
+                    if relation.get('type') == 'M2M':
+                        relation_M2M = [
+                                 {
+                                  'relation_atribute_name': '{0}_id'.format(relation.get('db_referenced_table_left_pk').split('.')[0]),
+                                  'atribute_field': 'Column','atribute_field_type': 'Integer', 'atribute_pk':True,
+                                  'atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_left_pk'))
+                                 },
+                                 {
+                                 'relation_atribute_name': relation.get('rst_referencing_name_left'),'atribute_field': 'relationship',
+                                 'atribute_field_name': "'{0}'".format(relation.get('rst_referenced_model_left')),
+                                 'atribute_field_back_populates': "'{0}'".format(relation.get('rst_referenced_backref_left'))
+                                 },
+                                 {
+                                 'relation_atribute_name': '{0}_id'.format(relation.get('db_referenced_table_right_pk').split('.')[0]),
+                                 'atribute_field': 'Column','atribute_field_type': 'Integer','atribute_pk':True,
+                                 'atribute_field_fk': "'{0}'".format(relation.get('db_referenced_table_right_pk'))
+                                 },
+                                 {
+                                 'relation_atribute_name': relation.get('rst_referencing_name_right'),'atribute_field': 'relationship',
+                                 'atribute_field_name': "'{0}'".format(relation.get('rst_referenced_model_right')),
+                                 'atribute_field_back_populates': "'{0}'".format(relation.get('rst_referenced_backref_right'))
+                                 }]
+                        self.relationship_atributes_attrs(model,relation_M2M)
 
-                    relation_M2M_target_A = [
-                               {
-                               'relation_atribute_name': relation.get('rst_referenced_backref_left'),'atribute_field': 'relationship',
-                               'atribute_field_name': "'{0}'".format(model.__rst_model_name__),
-                               'atribute_field_back_populates': "'{0}'".format(relation.get('rst_referencing_name_left'))
-                               }]
-                    target_a = self.get_model_by_name(list_models,relation.get('rst_referenced_model_left'))
-                    self.relationship_atributes_attrs(target_a,relation_M2M_target_A)
+                        relation_M2M_target_A = [
+                                   {
+                                   'relation_atribute_name': relation.get('rst_referenced_backref_left'),'atribute_field': 'relationship',
+                                   'atribute_field_name': "'{0}'".format(model.__rst_model_name__),
+                                   'atribute_field_back_populates': "'{0}'".format(relation.get('rst_referencing_name_left'))
+                                   }]
+                        target_a = self.get_model_by_name(list_models,relation.get('rst_referenced_model_left'))
+                        self.relationship_atributes_attrs(target_a,relation_M2M_target_A)
 
-                    relation_M2M_target_B = [
-                               {
-                               'relation_atribute_name': relation.get('rst_referenced_backref_right'),'atribute_field': 'relationship',
-                               'atribute_field_name': "'{0}'".format(model.__rst_model_name__),
-                               'atribute_field_back_populates': "'{0}'".format(relation.get('rst_referencing_name_right'))
-                               }]
-                    target_b = self.get_model_by_name(list_models,relation.get('rst_referenced_model_right'))
-                    self.relationship_atributes_attrs(target_b,relation_M2M_target_B)
+                        relation_M2M_target_B = [
+                                   {
+                                   'relation_atribute_name': relation.get('rst_referenced_backref_right'),'atribute_field': 'relationship',
+                                   'atribute_field_name': "'{0}'".format(model.__rst_model_name__),
+                                   'atribute_field_back_populates': "'{0}'".format(relation.get('rst_referencing_name_right'))
+                                   }]
+                        target_b = self.get_model_by_name(list_models,relation.get('rst_referenced_model_right'))
+                        self.relationship_atributes_attrs(target_b,relation_M2M_target_B)
 
-        render_to_template("DB2Rest/models.py", "model_template.py",list_models)
+        [print(r.get('model')) for result in results for r in result]
+        return list_models, results
 
 
     def get_model_by_name(self, list_models, model_name):
@@ -251,14 +252,28 @@ class LoadModelClasses(object):
             if model.__rst_model_name__ == model_name:
                 return model
 
+    def check_status_relation(self, list_relations_result):
+        status_list=[]
+        for results in list_relations_result:
+            for result in results:
+                if result.get('status')==1 or result.get('status')==3:
+                    status_list.append(result)
+        return status_list
+
 
     def generate_file(self):
        list_models = self.generate_models()
-       relations=[]
-       for model in list_models:
-           relations.append(self.check_relationships(model))
-       self.generate_relationships(list_models)
-       print('Arquivo models.py gerado com sucesso! Realize o import deste arquivo para uso dos serviços!')
+       list_models_relationships = self.generate_relationships(list_models)
+
+       if list_models_relationships[1]:
+           status_list = self.check_status_relation(list_models_relationships[1])
+           if not status_list:
+               render_to_template("DB2Rest/models.py", "model_template.py",list_models_relationships[0])
+               print('\nArquivo models.py gerado com sucesso! Realize o import deste arquivo para uso dos serviços!\n')
+           else:
+               print('\nNão foi possível gerar o arquivo models.py devido a inconsistencia nos dados de relacionamentos. Verifique o detalhamento acima e faça as correções necessárias.')
+
+
 
 class ModelHelper(object):
 
