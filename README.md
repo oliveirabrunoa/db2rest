@@ -123,9 +123,9 @@ Attributes used on realitons: Many-to-One (M2O), One-to-Many(O2M) e One-to-One(O
 
 **"db_referenced_table"** The table on the database represented by the model relates.
 
-**"db_referencing_table_pk"** The attribute primary key on referenced table 
+**"db_referencing_table_pk"** The attribute primary key on referenced table (TABLE.PRIMARYKEY)
 
-**"db_referenced_table_fk"** The attribute that used as foreign key on this model
+**"db_referenced_table_fk"** The attribute on this model that used as foreign key 
 
 **"rst_referenced_backref"** The attribute that allow to acess this model by other side of relatinship (example: categoria.postagens)
 
@@ -152,8 +152,8 @@ Attributes used on realitons: Many-to-One (M2O), One-to-Many(O2M) e One-to-One(O
                     "rst_referencing_name": "categoria",
                     "rst_referenced_model": "Categoria",
                     "db_referenced_table":"category",
-                    "db_referencing_table_pk": "category",
-                    "db_referenced_table_fk": "category.id",
+                    "db_referenced_table_pk": "category.id",
+                    "db_referencing_table_fk": "category",
                     "rst_referenced_backref": "postagens"}
                 ]
 }
@@ -181,8 +181,8 @@ Attributes used on realitons: Many-to-One (M2O), One-to-Many(O2M) e One-to-One(O
                     "rst_referencing_name": "livro",
                     "rst_referenced_model": "Livro",
                     "db_referenced_table":"books",
-                    "db_referencing_table_pk": "books.id",
-                    "db_referenced_table_fk":"book_id",
+                    "db_referenced_table_pk": "books.id",
+                    "db_referencing_table_fk":"book_id",
                     "rst_referenced_backref":"revisao"} 
                 ]
 }
@@ -207,20 +207,20 @@ Attributes used on realitons: Many-to-One (M2O), One-to-Many(O2M) e One-to-One(O
                 
                 ],
 "relationships": [{
-                  "type":"O2O",
-                  "rst_referencing_name": "usuario",
-                  "rst_referenced_model": "Usuario",
-                  "db_referenced_table":"users",
-                  "db_referencing_table_pk": "users.id",
-                  "db_referenced_table_fk":"user_id",
-                  "rst_referenced_backref": "endereco"} 
+                    "type":"O2O",
+                    "rst_referencing_name": "usuario",
+                    "rst_referenced_model": "Usuario",
+                    "db_referenced_table":"users",
+                    "db_referenced_table_pk": "users.id",
+                    "db_referencing_table_fk":"user_id",
+                    "rst_referenced_backref": "endereco"} 
               ]
 }
 ```
 
 ###### #Many-to-Many (M2M)
 
-```
+```json
 {
   "__rst_model_name__": "EntryTag",
   "__db_table_name__": "entrytag",
