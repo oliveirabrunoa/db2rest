@@ -123,9 +123,9 @@ Attributes used on realitons: Many-to-One (M2O), One-to-Many(O2M) e One-to-One(O
 
 **"db_referenced_table"** The table on the database represented by the model relates.
 
-**"db_referencing_table_pk"** The attribute primary key on referenced table (TABLE.PRIMARYKEY)
+**"db_referenced_table_pk"** The attribute primary key on referenced table (TABLE.PRIMARYKEY)
 
-**"db_referenced_table_fk"** The attribute on this model that used as foreign key 
+**"db_referencing_table_fk"** The attribute on this model that used as foreign key 
 
 **"rst_referenced_backref"** The attribute that allow to acess this model by other side of relatinship (example: categoria.postagens)
 
