@@ -48,6 +48,7 @@ class LoadModelClasses(object):
                 return table
 
         return False
+
     #Verifica se o nome da coluna informada existe na base de dados.
     def check_column_name(self,table_name, column_name):
         insp = inspect(engine)
@@ -106,6 +107,16 @@ class LoadModelClasses(object):
                             else:
                                 result_list.append({"status":2,"model": '{0}: Relacionamento entre {1} e {2} detectado!'
                                                .format(model.__rst_model_name__,model.__db_table_name__,relationship.get('db_referenced_table'))})
+                        if relationship.get('db_referencing_table_fk'):
+                            #print(relationship.get('db_referencing_table_fk'))
+                            mapper_referencing_table = inspect(self.get_table(model.__db_table_name__))
+                            columns =[]
+                            for column in mapper_referencing_table.columns:
+                                columns.append(str(column).split(".")[1])
+
+                            if relationship.get('db_referencing_table_fk') not in columns:
+                                result_list.append({"status":4, "model": "{0}: O atributo '{1}' (db_referencing_table_fk) informado como Foreign Key para a tabela '{2}' NÃO foi detectado"
+                                               .format(model.__rst_model_name__,relationship.get('db_referencing_table_fk'),mapper_table)})
 
             return result_list
 
@@ -256,7 +267,7 @@ class LoadModelClasses(object):
         status_list=[]
         for results in list_relations_result:
             for result in results:
-                if result.get('status')==1 or result.get('status')==3:
+                if result.get('status')==1 or result.get('status')==3 or result.get('status')==4:
                     status_list.append(result)
         return status_list
 
