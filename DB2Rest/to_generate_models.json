@@ -19,9 +19,11 @@
                       "rst_attribute_name":  "hora_postagem",
                       "db_column_table":"time"
                     }],
-    "derived_attribute":[{
-                      "rst_property_name": "datalhes_publicacao",
-                      "db_columns": "date|time"
+    "derived_attributes":[{
+                      "rst_property_name": "detalhes_categoria",
+                      "db_columns": "category.name",
+                      "db_clause_where": "id|1",
+                      "db_rows_many": "True"
                         }],
     "relationships": [{
                       "type":"M2O",

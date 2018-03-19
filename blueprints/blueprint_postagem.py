@@ -8,7 +8,8 @@ postagem = Blueprint("postagem", __name__)
 
 @postagem.route('/postagens')
 def lista_postagens():
-    postagens = models.Postagem.query.all()
-    return jsonify(result=[dict(id_postagem=p.id_postagem, titulo=p.titulo,
-                                data=str(p.data_postagem),hora=str(p.hora_postagem),
-                                categoria = str(p.categoria)) for p in postagens])
+    postagens = models.Postagem.query.all()[0]
+    return postagens.detalhes_categoria
+    #return jsonify(result=[dict(id_postagem=p.id_postagem, titulo=p.titulo,
+    #                            data=str(p.data_postagem),hora=str(p.hora_postagem),
+    #                            categoria = str(p.categoria)) for p in postagens])

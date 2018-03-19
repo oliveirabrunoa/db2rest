@@ -1,6 +1,9 @@
-from DB2Rest.db import Base
+from DB2Rest.db import Base, db_session, engine, meta
 from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy import inspect
+from DB2Rest import utils
 
 
 class Postagem(Base):
@@ -15,7 +18,17 @@ class Postagem(Base):
     categoria_id = Column('category',Integer,ForeignKey('category.id'))
     categoria = relationship('Categoria',back_populates='postagens',lazy='joined')
     
+    
+    
+    @hybrid_property
+    def detalhes_categoria(self):
+        return utils.get_table_derived_attributes(
+            table_name='category', column_name='name',
+            clause_where_attribute='id',clause_where_value=1,
+            many=True)
 
+    
+    
 
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
@@ -32,7 +45,7 @@ class Categoria(Base):
     ##Relationships##
     postagens = relationship('Postagem',back_populates='categoria')
     
-
+    
 
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
@@ -52,7 +65,7 @@ class Livro(Base):
     ##Relationships##
     revisao = relationship('Revisao',back_populates='livro')
     
-
+    
 
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
@@ -73,7 +86,7 @@ class Revisao(Base):
     livro_id = Column('book_id',Integer,ForeignKey('books.id'))
     livro = relationship('Livro',back_populates='revisao',lazy='joined')
     
-
+    
 
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
@@ -90,7 +103,7 @@ class Usuario(Base):
     ##Relationships##
     endereco = relationship('Endereco',back_populates='usuario',uselist=False)
     
-
+    
 
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
@@ -110,7 +123,7 @@ class Endereco(Base):
     usuario_id = Column('user_id',Integer,ForeignKey('users.id'))
     usuario = relationship('Usuario',back_populates='endereco')
     
-
+    
 
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
@@ -128,7 +141,7 @@ class EntryModel(Base):
     ##Relationships##
     tags = relationship('EntryTag',back_populates='entry')
     
-
+    
 
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
@@ -145,7 +158,7 @@ class TagModel(Base):
     ##Relationships##
     entries = relationship('EntryTag',back_populates='tag')
     
-
+    
 
     def __init__(self, **kwargs):
         for k, v in kwargs.items():
@@ -165,7 +178,7 @@ class EntryTag(Base):
     tag_id = Column(Integer,ForeignKey('tag.id'),primary_key=True)
     tag = relationship('TagModel',back_populates='entries')
     
-
+    
 
     def __init__(self, **kwargs):
         for k, v in kwargs.items():

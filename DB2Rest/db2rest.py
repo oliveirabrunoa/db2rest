@@ -3,6 +3,7 @@ from DB2Rest.db import Base, db_session, engine, meta
 from DB2Rest.render_template import render_to_template
 import json, pdb, os, importlib
 from sqlalchemy import inspect
+import ast
 
 
 class LoadModelClasses(object):
@@ -58,6 +59,14 @@ class LoadModelClasses(object):
                 return True
 
         return False
+
+    def check_table_column(self, table_name, column_name):
+        table=self.check_table_exist(table_name)
+        column=self.check_column_name(table_name,column_name)
+        if table and column:
+            return True
+        return False
+
 
     #Formata e checa as informações preenchidas sobre tabelas e atributos do arquivo de especificação.
     def check_model_attributes(self, model):
@@ -271,10 +280,35 @@ class LoadModelClasses(object):
                     status_list.append(result)
         return status_list
 
+    def generate_derived_attributes(self, list_models):
+        result_list=[]
+        derived_attributes_format=[]
+        for model in list_models:
+            derived_attributes = model.get_derived_attributes()
+            if derived_attributes:
+                print('\nVerificando atributos derivados...')
+                for derived_attribute in derived_attributes:
+                    for column in derived_attribute.get('db_columns'):
+                        validate_fields = self.check_table_column(column.split('.')[0], column.split('.')[1])
+                        if validate_fields is True:
+                            derived_attributes_format.append({
+                                "rst_property_name": derived_attribute.get('rst_property_name'),
+                                "table": column.split('.')[0],
+                                "column": column.split('.')[1],
+                                "db_clause_where_att": derived_attribute.get('db_clause_where')[0],
+                                "db_clause_where_value": derived_attribute.get('db_clause_where')[1],
+                                "db_rows_many": ast.literal_eval(derived_attribute.get('db_rows_many'))
+                            })
+                print(derived_attributes_format)
+                setattr(model, 'derived_attributes', derived_attributes_format)
+
+        return list_models, result_list
+
 
     def generate_file(self):
        list_models = self.generate_models()
        list_models_relationships = self.generate_relationships(list_models)
+       list_derived_attributes = self.generate_derived_attributes(list_models)
 
        if list_models_relationships[1]:
            status_list = self.check_status_relation(list_models_relationships[1])
@@ -283,6 +317,9 @@ class LoadModelClasses(object):
                print('\nArquivo models.py gerado com sucesso! Realize o import deste arquivo para uso dos serviços!\n')
            else:
                print('\nNão foi possível gerar o arquivo models.py devido a inconsistencia nos dados de relacionamentos. Verifique o detalhamento acima e faça as correções necessárias.')
+
+       if list_derived_attributes[1]:
+           print(list_derived_attributes[1])
 
 
 
@@ -306,3 +343,14 @@ class ModelHelper(object):
         relationships_attr = getattr(self, 'relationships', None)
         if relationships_attr:
             return relationships_attr
+
+    def get_derived_attributes(self):
+        derived_attributes = getattr(self, 'derived_attributes', None)
+        derived_attributes_list=[]
+        if derived_attributes:
+            for derived_attribute in derived_attributes:
+                columns = derived_attribute.get('db_columns').split("|")
+                derived_attributes_list.append(dict(rst_property_name=derived_attribute.get('rst_property_name'),
+                                                    db_columns=columns, db_rows_many=derived_attribute.get('db_rows_many'),
+                                                    db_clause_where= derived_attribute.get('db_clause_where').split("|")))
+        return derived_attributes_list
