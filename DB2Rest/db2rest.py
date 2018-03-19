@@ -302,6 +302,21 @@ class LoadModelClasses(object):
                 print(derived_attributes_format)
                 setattr(model, 'derived_attributes', derived_attributes_format)
 
+
+
+
+'''
+if validate_fields[0] is False:
+    result_list.append({"status":1, "modelo":"A tabela {0} informada como coluna em 'derived_attributes' no modelo {1} não existe!".
+          format(validate_fields[0], model.__rst_model_name__)})
+if validate_fields[1] is False:
+    result_list.append({"status":2, "modelo":"O atributo {0} informada para a coluna em 'derived_attributes' no modelo {1} não existe!".
+          format(validate_fields[1], model.__rst_model_name__)})
+if validate_fields:
+    result_list.append({"status":3, "modelo":"{0}: O atributo derivado {1} foi criado com sucesso!".
+          format(model.__rst_model_name__,columns.get('rst_property_name'))})
+    #setattr(model, 'derived_attributes', model.get_derived_attributes())
+'''
         return list_models, result_list
 
 
