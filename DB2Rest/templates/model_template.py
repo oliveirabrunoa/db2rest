@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import inspect
-from DB2Rest import utils
+from DB2Rest import queries
 
 {% for model in data %}
 class {{model.__rst_model_name__}}(Base):
@@ -24,7 +24,7 @@ class {{model.__rst_model_name__}}(Base):
     {% for derived_attribute in model.derived_attributes %}
     @hybrid_property
     def {{derived_attribute.rst_property_name}}(self):
-        return utils.get_table_derived_attributes(
+        return queries.get_table_derived_attributes(
             table_name='{{derived_attribute.table}}', column_name='{{derived_attribute.column}}',
             clause_where_attribute='{{derived_attribute.db_clause_where_att}}',clause_where_value={{derived_attribute.db_clause_where_value}},
             many={{derived_attribute.db_rows_many}})

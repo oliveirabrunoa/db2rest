@@ -3,7 +3,7 @@ from sqlalchemy import Column, Integer, String, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy import inspect
-from DB2Rest import utils
+from DB2Rest import queries
 
 
 class Postagem(Base):
@@ -22,10 +22,10 @@ class Postagem(Base):
     
     @hybrid_property
     def detalhes_categoria(self):
-        return utils.get_table_derived_attributes(
+        return queries.get_table_derived_attributes(
             table_name='category', column_name='name',
             clause_where_attribute='id',clause_where_value=1,
-            many=True)
+            many=False)
 
     
     

@@ -23,7 +23,7 @@
                       "rst_property_name": "detalhes_categoria",
                       "db_columns": "category.name",
                       "db_clause_where": "id|1",
-                      "db_rows_many": "True"
+                      "db_rows_many": "False"
                         }],
     "relationships": [{
                       "type":"M2O",
