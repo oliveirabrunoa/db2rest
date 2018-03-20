@@ -68,6 +68,8 @@ The fields preceding "rst" area to identify the models on web service and "db" r
 ## Configuring Attributes:
 
 Following our first example, learn how to configure the attributes that are mapped.
+!Atention: The attributes that are key to relationships are not in this section, but in the relationships section
+
 ```json
 {
   "__rst_model_name__": "Postagem", 
@@ -265,6 +267,19 @@ Attributes used on realitons: Many-to-One (M2O), One-to-Many(O2M) e One-to-One(O
 
 **"rst_referenced_backref_right"** The attribute that allow to acess the list of left side on right side
 
+
+## Configuring Derived Attribute:
+
+Derived attributes are nothing more than attributes that will be inserted into the template whose values are defined in a different table that has been mapped.
+
+```json
+ "derived_attributes":[{
+                      "rst_property_name": "detalhes_categoria",
+                      "db_columns": "category.name",
+                      "db_clause_where": "id|1",
+                      "db_rows_many": "False"
+                        }]
+```                        
 
 ### Running
 
