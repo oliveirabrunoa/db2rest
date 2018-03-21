@@ -1,0 +1,33 @@
+[
+  {
+    "__rst_model_name__": "The name of the Model on Web Service",
+    "__db_table_name__": "The table on the Legacy Database",
+    "attributes": [{
+                      "rst_attribute_name": "Attribute expected by Web Service",
+                      "db_column_table":"Column of the database that will be represented on Web Service",
+                      "db_primary_key": "Especial field that indicates that field is a primary key."
+                    },
+                    {
+                      "rst_attribute_name":  "Attribute expected by Web Service",
+                      "db_column_table":"Column of the database that will be represented on Web Service"
+                    },
+{
+                      "rst_attribute_name":  "Attribute expected by Web Service",
+                      "db_column_table":"Column of the database that will be represented on Web Service"
+                    }],
+    "derived_attributes":[{
+                      "rst_property_name": "The name of this attribute on model (How it is called on service)",
+                      "db_columns": "The table and column that will be returned. Example: 'category.name'",
+                      "db_clause_where": "The attribute and value used on where clause, separated by "|". Example: 'id|1'",
+                      "db_rows_many": "The attribute that indicates if the where clause will return just one row or many (as a python list). Can be True or False"
+                        }],
+    "relationships": [{
+                      "type":"Indicates the type of relationship (M2O,O2M,O2O). M2M has a different struture",
+                      "rst_referencing_name": "The name of the field used on web service to get the relation (example: postagem.categoria)",
+                      "rst_referenced_model": "Model of the web service with which it relates",
+                      "db_referenced_table":"The table on the database represented by the model relates.",
+                      "db_referenced_table_pk": "The attribute primary key on referenced table (TABLE.PRIMARYKEY)",
+                      "db_referencing_table_fk": "The attribute on this model that used as foreign key",
+                      "rst_referenced_backref": "The attribute that allow to acess this model by other side of relatinship (example: categoria.postagens)"}]
+  }
+]

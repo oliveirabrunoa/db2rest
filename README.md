@@ -117,7 +117,7 @@ Attributes used on realitons: Many-to-One (M2O), One-to-Many(O2M) e One-to-One(O
 
 **"relationships"** JSON list with relationships from this model
 
-**"type"** #M2O means Many-to-One relationship
+**"type"** Type of relationship
 
 **"rst_referencing_name"** The name of the field used on web service to get the relation (example: postagem.categoria)
 
