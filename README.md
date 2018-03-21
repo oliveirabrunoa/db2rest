@@ -45,7 +45,7 @@ Setup the environment variable 'CONFIG_FILE' with the JSON expected
 export CONFIG_FILE="YOURFILE.json"
 ```
 
-### Configuring
+## Configuring the JSON File
 
 Enter the values in the configuration json, according to the instructions below. 
 
@@ -62,7 +62,7 @@ The fields preceding "rst" area to identify the models on web service and "db" r
 
 **"__db_table_name__"** The table on the Legacy Database
 
-## Configuring Attributes:
+### Configuring Attributes:
 
 Following our first example, learn how to configure the attributes that are mapped.
 !Atention: The attributes that are key to relationships are not in this section, but in the relationships section
@@ -265,7 +265,7 @@ Attributes used on realitons: Many-to-One (M2O), One-to-Many(O2M) e One-to-One(O
 **"rst_referenced_backref_right"** The attribute that allow to acess the list of left side on right side
 
 
-## Configuring Derived Attribute:
+### Configuring Derived Attribute:
 
 Derived attributes are nothing more than attributes that will be inserted into the template whose values are defined in a different table that has been mapped.
 
@@ -332,7 +332,6 @@ Postgresql:
 ```
 export DATABASE_URL="postgresql://<<<usuario>>>:<<<senha>>>@localhost/<<<DATABASE>>>"  #Replace the values between <<< >>>
 ```
-
 
 
 ### Running
