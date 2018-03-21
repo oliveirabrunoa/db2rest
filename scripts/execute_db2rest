@@ -1,8 +1,11 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 from DB2Rest.db2rest import LoadModelClasses
+import os
+
 
 if __name__ == '__main__':
-    CONFIG_FILE = 'DB2Rest/to_generate_models.json'
+    CONFIG_FILE = os.environ['CONFIG_FILE']
     load_models = LoadModelClasses(CONFIG_FILE)
     load_models.generate_file()

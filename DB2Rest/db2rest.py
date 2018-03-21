@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from DB2Rest.db import Base, db_session, engine, meta
-from DB2Rest.render_template import render_to_template
+from DB2Rest.render_template import render_to_template,BASE_DIR
 import json, pdb, os, importlib
 from sqlalchemy import inspect
 import ast
@@ -318,7 +318,7 @@ class LoadModelClasses(object):
        status_derived_attributes = []
        [status_derived_attributes.append(m.get('status')) for m in list_derived_attributes[1] if m.get('status')==2]
        if not status_list and not status_derived_attributes:
-           render_to_template("DB2Rest/models.py", "model_template.py",list_models_relationships[0])
+           render_to_template(BASE_DIR+"/models.py", "model_template.py",list_models_relationships[0])
            print('\nArquivo models.py gerado com sucesso! Realize o import deste arquivo para uso dos serviços!\n')
        else:
            print('\nNão foi possível gerar o arquivo models.py devido a inconsistencia nos dados de relacionamentos ou atributos derivados. Verifique o detalhamento acima e faça as correções necessárias.')
