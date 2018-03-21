@@ -347,6 +347,15 @@ Run the main python module
 ```
 python run.py
 ```
+Try the services:
+```
+/usuarios
+/postagens
+/categorias
+/entries
+/tags
+```
+
 
 ## Authors
 
