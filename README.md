@@ -328,18 +328,13 @@ SQLite:
 ```
 export DATABASE_URL="sqlite:///test.db" #Example of one sqLite database. If not exists, the database is created.
 ```
-Postgresql:
-```
-export DATABASE_URL="postgresql://<<<usuario>>>:<<<senha>>>@localhost/<<<DATABASE>>>"  #Replace the values between <<< >>>
-```
-
 
 ### Running
 
 Execute script to generate models
 
 ```
-python execute_db2rest.py
+execute_db2rest
 ```
 
 Import the model.py on the services
