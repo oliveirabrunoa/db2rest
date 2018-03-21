@@ -96,11 +96,6 @@ Following our first example, learn how to configure the attributes that are mapp
 
 **"db_primary_key"** Especial field that indicates that field is a primary key.
 
-**"rst_attribute_name"** Attribute expected by Web Service
-
-**"db_column_table"** Column of the database that will be represented on Web Service
-
-
 
 ## Configure Relationships:
 
@@ -277,6 +272,15 @@ Derived attributes are nothing more than attributes that will be inserted into t
                       "db_rows_many": "False"
                         }]
 ```                        
+**"derived_attributes"** JSON list with derived_attributes from this model
+
+**"rst_property_name"** The name of this attribute on model (How it is called on service)
+
+**"db_columns"** The table and column that will be returned.
+
+**"db_clause_where** The attribute and value used on where clause, separated by "|"
+
+**"db_rows_many** The attribute that indicates if the where clause will return just one row or many (as a python list)
 
 
 ### Running
