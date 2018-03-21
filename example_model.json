@@ -18,7 +18,7 @@
     "derived_attributes":[{
                       "rst_property_name": "The name of this attribute on model (How it is called on service)",
                       "db_columns": "The table and column that will be returned. Example: 'category.name'",
-                      "db_clause_where": "The attribute and value used on where clause, separated by "|". Example: 'id|1'",
+                      "db_clause_where": "The attribute and value used on where clause, separated by '|'. Example: 'id|1'",
                       "db_rows_many": "The attribute that indicates if the where clause will return just one row or many (as a python list). Can be True or False"
                         }],
     "relationships": [{
