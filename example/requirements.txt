@@ -3,5 +3,5 @@ gunicorn==19.6.0
 flask_sqlalchemy==2.1
 psycopg2==2.7.1
 pytz==2016.10
-requests==2.13.0
+requests==2.20.0
 db2rest-tool
