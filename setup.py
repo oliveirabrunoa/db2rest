@@ -12,7 +12,7 @@ setup(name='db2rest-tool',
 
       scripts=['scripts/execute_db2rest'],
 
-      install_requires=['Flask==1.0','gunicorn==19.6.0','flask_sqlalchemy==2.1','psycopg2==2.7.1','pytz==2016.10','requests==2.13.0'],
+      install_requires=['Flask==2.3.2','gunicorn==19.6.0','flask_sqlalchemy==2.1','psycopg2==2.7.1','pytz==2016.10','requests==2.13.0'],
 
       include_package_data=True,
 )
